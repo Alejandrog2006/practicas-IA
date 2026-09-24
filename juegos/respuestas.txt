@@ -1,0 +1,15 @@
+Pregunta 1.1: ¿Cómo evoluciona el número de nodos al aumentar la profundidad? 
+El número de nodos aumenta rápidamente con la profundidad. 
+Si el factor de ramificación medio es aproximadamente b, 
+entonces el número de nodos crece aproximadamente como:
+1+b+b2+⋯+b^d 
+Por eso pasar de profundidad 3 a 4 puede aumentar mucho el coste. 
+Pregunta 1.2: ¿Es viable explorar exhaustivamente el árbol completo de Reversi hasta el 
+final de la partida? Justifica tu respuesta. 
+No es viable explorar exhaustivamente toda una partida de Reversi. 
+En cada turno suele haber varias jugadas legales y una partida puede durar muchas jugadas. 
+El crecimiento aproximado es exponencial:
+O(b^d)
+Aunque una posición tenga solo unas pocas jugadas posibles, 
+al multiplicarlas durante decenas de turnos aparecen cantidades enormes de estados. 
+Por eso después se utilizan profundidad limitada, heurísticas y poda alfa-beta.
