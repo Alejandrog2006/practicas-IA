@@ -13,3 +13,62 @@ O(b^d)
 Aunque una posición tenga solo unas pocas jugadas posibles, 
 al multiplicarlas durante decenas de turnos aparecen cantidades enormes de estados. 
 Por eso después se utilizan profundidad limitada, heurísticas y poda alfa-beta.
+Pregunta 1.3: ¿Qué diferencias observáis entre BP y BA al explorar árboles de juego?
+BP explora una rama hasta el fondo antes de volver atrás para explorar otra. 
+Por eso puede encontrar una solución rápidamente, pero la solución no tiene por qué ser la más corta. 
+En nuestro experimento BP encontró una solución de 9 movimientos visitando 10 nodos.
+BA explora primero todos los nodos de una profundidad, después los de la siguiente, 
+y así sucesivamente. Por eso encuentra la solución con menos movimientos cuando todas las acciones tienen el mismo coste. 
+En el experimento BA encontró una solución de 4 movimientos, aunque tuvo que visitar 80 nodos.
+Pregunta 1.4: ¿Cuál de los dos algoritmos requiere más memoria? Explica por qué.
+BA requiere normalmente más memoria. Debe conservar en la frontera todos los nodos
+pendientes de un nivel antes de pasar al siguiente. Si el factor de ramificación es b
+y la solución está a profundidad d, puede llegar a almacenar O(b^d) nodos.
+BP necesita conservar principalmente la rama actual y las alternativas pendientes.
+Su memoria es aproximadamente O(bd) con una implementación de búsqueda en árbol,
+por lo que suele consumir menos memoria, aunque puede tardar más o encontrar una
+solución peor.
+Pregunta 1.5: Suponed que cada hoja contiene una puntuación fija (por ejemplo, en
+función del número de fichas negras). ¿Permiten estos algoritmos determinar cuál es la
+mejor jugada para un jugador racional? Justificad vuestra respuesta.
+No, BP y BA por sí solos no determinan la mejor jugada. Estos algoritmos buscan un
+objetivo y devuelven la primera solución que encuentran; no comparan las puntuaciones
+de todas las hojas ni tienen en cuenta que el adversario también elige sus movimientos.
+Para elegir la mejor jugada habría que explorar los estados hasta una profundidad
+determinada, evaluar sus hojas y aplicar minimax: maximizar la puntuación en los
+turnos propios y minimizarla en los turnos del adversario. La poda alfa-beta puede
+reducir el número de nodos explorados sin cambiar la decisión.
+Pregunta 1.6: Define 3 funciones heurísticas con varios niveles de complejidad. ¿Qué
+características parecen ayudar a resolver el problema de capturar una esquina en un
+menor número de pasos?
+Hemos definido tres heurísticas. heuristic1 es la heurística nula y no aporta
+información adicional. heuristic2 devuelve 0 si ya se ha capturado una esquina y 1
+en caso contrario, que es una cota inferior del número de movimientos restantes.
+heuristic3 cuenta las esquinas que todavía no están capturadas. Para el problema de
+una esquina, las dos últimas heurísticas son equivalentes; para el problema de todas
+las esquinas, heuristic3 aporta más información.
+En el experimento de una esquina, A* con heuristic1 visitó 80 nodos y encontró un
+camino de 4 movimientos. Con heuristic2 y heuristic3 visitó 72 nodos y también
+encontró un camino de 4 movimientos. Por tanto, conocer el objetivo y valorar el
+control de las esquinas ayuda a reducir la exploración sin cambiar la solución óptima.
+Pregunta 1.7: ¿Qué ocurre al intentar capturar todas las esquinas?
+Al usar AllCornersReversiSearchProblem, el objetivo exige capturar las cuatro esquinas
+en lugar de solo una. El espacio de estados crece mucho porque cada movimiento genera
+nuevas respuestas del adversario y hay que mantener la búsqueda durante muchas más
+jugadas. En el tablero de 6x6 utilizado, las búsquedas A* no terminaron en el tiempo
+de prueba de 8 segundos con ninguna de las tres heurísticas. Esto muestra que una
+heurística sencilla basada únicamente en el número de esquinas capturadas no guía lo
+suficiente la búsqueda para este objetivo más difícil.
+Pregunta 1.8: ¿Puede equivocarse la función heurística? ¿Qué aspectos habría que tener
+en cuenta para que A* sea óptimo?
+Sí. Una heurística puede valorar como prometedor un estado que en realidad está lejos
+del objetivo, o incluso sobreestimar el coste restante. Para que A* sea óptimo, la
+heurística debe ser admisible: nunca debe estimar un coste mayor que el coste real
+mínimo hasta una solución. También conviene que sea consistente, de modo que el valor
+no disminuya más que el coste de una acción entre dos estados consecutivos.
+Las heurísticas utilizadas aquí son cotas inferiores: cada movimiento puede capturar
+como máximo una esquina, por lo que el número de esquinas que faltan no sobreestima
+los movimientos necesarios. En cambio, una heurística que premie muchas fichas,
+movilidad o posiciones estratégicas puede ser útil para guiar la búsqueda, pero no
+garantiza por sí sola que A* encuentre el camino óptimo si sus valores no son cotas
+inferiores del coste restante.

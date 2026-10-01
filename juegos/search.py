@@ -14,7 +14,7 @@ from datetime import timedelta
 
 import util
 from reversi import (
-    get_valid_moves, 
+    get_valid_moves,
     enemy_captured_by_move,
     create_standard_board,
     )
@@ -40,22 +40,22 @@ class CornerReversiState:
 
     def isGoal(self, min_corners=1):
         """
-          Checks to see if any of the players have conquered min_corners in the board.
+        Checks to see if any of the players have conquered min_corners in the board.
         """
         corners = [self.board.get((1, 1)), self.board.get((1, self.height)),
-                   self.board.get((self.width, 1)), self.board.get((self.width, self.height))]
+                self.board.get((self.width, 1)), self.board.get((self.width, self.height))]
         return corners.count(self.player1) + corners.count(self.player2) >= min_corners
 
     def legalMoves(self):
         """
-          Returns a list of legal moves from the current state.
+        Returns a list of legal moves from the current state.
         """
         next_player = self.player2 if self.cur_player == self.player1 else self.player1
         return get_valid_moves(self.board, self.height, self.width, self.cur_player, next_player, self.blocked_cell_label, self.ignore_block_cells_in_captures) # RETURN THE LIST OF VALID MOVES
 
     def result(self, move):
         """
-          Returns a new board with the current state updated based on the provided move.
+        Returns a new board with the current state updated based on the provided move.
 
         NOTE: This function *does not* change the current object.  Instead,
         it returns a new object.
@@ -81,7 +81,7 @@ class CornerReversiState:
 
     def __getAsciiString(self):
         """
-          Returns a display string for the state
+        Returns a display string for the state
         """
         adversary = self.player2 if self.cur_player == self.player1 else self.player1
         moves = get_valid_moves(self.board, self.height, self.width, self.cur_player, adversary, self.blocked_cell_label, self.ignore_block_cells_in_captures)
@@ -122,7 +122,7 @@ class SearchProblem:
 
     def isGoalState(self, state):
         """
-          state: Search state
+        state: Search state
 
         Returns True if and only if the state is a valid goal state.
         """
@@ -130,7 +130,7 @@ class SearchProblem:
 
     def getSuccessors(self, state):
         """
-          state: Search state
+        state: Search state
 
         For a given state, this should return a list of tuples, 
         (successor, action), where 'successor' is a successor to the current
@@ -141,10 +141,10 @@ class SearchProblem:
 
 class CornerReversiSearchProblem(SearchProblem):
     """
-      Implementation of a SearchProblem for Reversi
+    Implementation of a SearchProblem for Reversi
 
-      Each state is represented by an instance of a valid Reversi board.
-      The problem is solved when at least one corner is captured.
+    Each state is represented by an instance of a valid Reversi board.
+    The problem is solved when at least one corner is captured.
     """
 
     def __init__(self, reversi_state: CornerReversiState):
@@ -159,8 +159,8 @@ class CornerReversiSearchProblem(SearchProblem):
 
     def getSuccessors(self, state):
         """
-          Returns list of (successor, action) pairs where
-          each succesor is a new board from the original state
+        Returns list of (successor, action) pairs where
+        each succesor is a new board from the original state
         """
         succ = []
         for a in state.legalMoves():
@@ -170,10 +170,10 @@ class CornerReversiSearchProblem(SearchProblem):
 
 class AllCornersReversiSearchProblem(CornerReversiSearchProblem):
     """
-      Implementation of a SearchProblem for Reversi
+    Implementation of a SearchProblem for Reversi
 
-      Each state is represented by an instance of a valid Reversi board.
-      The problem is solved when every corner is captured.
+    Each state is represented by an instance of a valid Reversi board.
+    The problem is solved when every corner is captured.
     """
 
     def isGoalState(self, state):
@@ -322,25 +322,61 @@ def simpleHeuristic(state, search_problem=None):
 
 
 def heuristic1(state, search_problem=None):
-    "*** YOUR CODE HERE ***"
+    """Baseline heuristic that provides no additional information."""
     return 0
 
 
 def heuristic2(state, search_problem=None):
-    "*** YOUR CODE HERE ***"
-    return 0
+    """Lower bound for reaching the first captured corner."""
+    return 0 if state.isGoal(1) else 1
 
 
 def heuristic3(state, search_problem=None):
-    "*** YOUR CODE HERE ***"
-    return 0
+    """Lower bound based on the number of corners still to capture."""
+    captured_corners = sum(
+        state.board.get(position) in (state.player1, state.player2)
+        for position in (
+            (1, 1),
+            (1, state.height),
+            (state.width, 1),
+            (state.width, state.height),
+        )
+    )
+    target_corners = 4 if isinstance(search_problem, AllCornersReversiSearchProblem) else 1
+    return max(0, target_corners - captured_corners)
 
 
 def aStarSearch(search_problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    raise NotImplementedError
+    num_visited = 0
+    pq = util.PriorityQueue()
+    start_state = search_problem.getStartState()
+    pq.push((start_state, [], 0), heuristic(start_state, search_problem))
+    best_cost = {}
 
+    def state_key(state):
+        return state.cur_player, tuple(sorted(state.board.items()))
+
+    while not pq.isEmpty():
+        current_state, possible_actions, g = pq.pop()
+
+        key = state_key(current_state)
+        if key in best_cost and best_cost[key] <= g:
+            continue
+        best_cost[key] = g
+        num_visited += 1
+
+        if search_problem.isGoalState(current_state):
+            return num_visited, possible_actions
+
+        for successor_state, action in search_problem.getSuccessors(current_state):
+            new_g = g + 1
+            successor_key = state_key(successor_state)
+            if successor_key not in best_cost or new_g < best_cost[successor_key]:
+                priority = new_g + heuristic(successor_state, search_problem)
+                pq.push((successor_state, possible_actions + [action], new_g), priority)
+
+    return num_visited, None
 
 def createRandomReversiGeneralState(moves, h, w):
     puzzle = CornerReversiState(create_standard_board(h, w, 'B', 'W'), height=h, width=w)
@@ -352,23 +388,23 @@ def createRandomReversiGeneralState(moves, h, w):
 
 def createSmallRandomReversiState(moves=10):
     """
-      moves: number of random moves to apply
+    moves: number of random moves to apply
 
-      Creates a random Othello board by applying
-      a series of 'moves' random moves to a solved
-      board. The size of the board is smaller than
-      the default board.
+    Creates a random Othello board by applying
+    a series of 'moves' random moves to a solved
+    board. The size of the board is smaller than
+    the default board.
     """
     return createRandomReversiGeneralState(moves, 6, 6)
 
 
 def createRandomReversiState(moves=100):
     """
-      moves: number of random moves to apply
+    moves: number of random moves to apply
 
-      Creates a random Othello board by applying
-      a series of 'moves' random moves to a solved
-      board.
+    Creates a random Othello board by applying
+    a series of 'moves' random moves to a solved
+    board.
     """
     return createRandomReversiGeneralState(moves, 8, 8)
 
@@ -411,7 +447,7 @@ if __name__ == '__main__':
         if path:
             print_path = [(chr(x+96), y) for x, y in path]
             print('%s found a path of %d moves visiting %d nodes in %s: %s' %
-                  (method, len(path), visited, str(timedelta(seconds=end - start)), str(print_path)))
+                (method, len(path), visited, str(timedelta(seconds=end - start)), str(print_path)))
             
             if print_steps:
                 curr = reversi_state
