@@ -1,14 +1,8 @@
-"""Funciones de evaluacion heuristica para el torneo de Reversi.
-
-ENTREGA 1 (Torneo 1 - 7 de Octubre):
-    - Solution1: Evaluacion posicional basada en matriz estatica de pesos.
-    - Solution2: Evaluacion geometrica basada en control de esquinas y bordes.
-    - Solution3: Evaluacion cuantitativa basada en recuento y paridad de fichas.
-
+"""
+Funciones heuristicas para el torneo
 Autores:
     Arturo Perez Noves <arturo.perezn@estudiante.uam.es>
     Alejandro Gonzalez Garcia <alejandro.gonzalez06@estudiante.uam.es>
-
 Grupo: 1311
 Pareja: 08
 """
@@ -61,9 +55,8 @@ def _eval_terminal(state: TwoPlayerGameState):
 
 
 class Solution1(StudentHeuristic):
-    """Heuristica 1: Evaluacion posicional.
-    
-    Analiza la calidad de las posiciones ocupadas en el tablero mediante
+    """
+    Analiza la calidad de las posiciones ocupadas en el tablero con
     una matriz estatica de pesos.
     """
 
@@ -88,10 +81,9 @@ class Solution1(StudentHeuristic):
 
 
 class Solution2(StudentHeuristic):
-    """Heuristica 2: Control de esquinas y bordes.
-    
-    Se centra exclusivamente en la estabilidad de las piezas: las esquinas
-    son permanentes e involteables, y los bordes ofrecen anclajes defensivos.
+    """
+    Se basa en la estabilidad de las piezas: las esquinas
+    son inalterables una vez se colocan, y los bordes ofrecen anclajes defensivos.
     """
 
     def get_name(self) -> str:
@@ -127,10 +119,9 @@ class Solution2(StudentHeuristic):
 
 
 class Solution3(StudentHeuristic):
-    """Heuristica 3: Paridad de fichas.
-    
-    Evalua directamente la diferencia porcentual entre el numero de fichas propias
-    y del adversario.
+    """
+    Evalua la diferencia porcentual entre el numero de fichas propias
+    y del contrario.
     """
 
     def get_name(self) -> str:
