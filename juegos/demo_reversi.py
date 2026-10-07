@@ -75,7 +75,7 @@ player_alphabeta2 = Player(
 )
 
 ## If you want to play against one of your heuristics, you should do the following
-from p1_gggg_mm_apellido1_apellido2 import Solution1  # import your StudentHeuristic here
+from p1_1311_08_perez_gonzalez import Solution1  # import your StudentHeuristic here
 my_heuristic = Solution1() # instantiate your heuristic here
 my_player = Player(
     name=my_heuristic.get_name(),
