@@ -1,9 +1,9 @@
 """Funciones de evaluacion heuristica para el torneo de Reversi.
 
-ENTREGA 1 (Torneo 1 - 7 de Octubre):
-    - Solution1: Evaluacion posicional basada en matriz estatica de pesos.
-    - Solution2: Evaluacion geometrica basada en control de esquinas y bordes.
-    - Solution3: Evaluacion cuantitativa basada en recuento y paridad de fichas.
+ENTREGA 2 (Torneo 2 - 14 de Octubre):
+    - Solution1: COMBINACION DE 1 Y 2 (Matriz posicional + Control reforzado de esquinas y bordes).
+    - Solution2: [INTACTA - Entrega 1] Control geometrico de esquinas y bordes.
+    - Solution3: [INTACTA - Entrega 1] Paridad y recuento cuantitativo de fichas.
 
 Autores:
     Arturo Perez Noves <arturo.perezn@estudiante.uam.es>
@@ -61,14 +61,14 @@ def _eval_terminal(state: TwoPlayerGameState):
 
 
 class Solution1(StudentHeuristic):
-    """Heuristica 1: Evaluacion posicional.
+    """Heuristica 1: COMBINACION DE 1 Y 2 (Posicion + Esquinas y Bordes).
     
-    Analiza la calidad de las posiciones ocupadas en el tablero mediante
-    una matriz estatica de pesos.
+    Integra la evaluacion de la matriz posicional con el refuerzo
+    geometrico del control de esquinas y casillas de borde.
     """
 
     def get_name(self) -> str:
-        return "1311_08_posicional"
+        return "1311_08_posicion_y_esquinas"
 
     def evaluation_function(self, state: TwoPlayerGameState) -> float:
         is_term, term_val = _eval_terminal(state)
@@ -77,18 +77,32 @@ class Solution1(StudentHeuristic):
 
         max_label, min_label = _get_player_labels(state)
         pos_score = 0.0
+        corners_max = 0
+        corners_min = 0
+        edges_max = 0
+        edges_min = 0
 
-        for pos, piece in state.board.items():
+        for (x, y), piece in state.board.items():
             if piece == max_label:
-                pos_score += WEIGHT_MATRIX.get(pos, 0)
+                pos_score += WEIGHT_MATRIX.get((x, y), 0)
+                if (x, y) in CORNERS:
+                    corners_max += 1
+                elif x == 1 or x == 8 or y == 1 or y == 8:
+                    edges_max += 1
             elif piece == min_label:
-                pos_score -= WEIGHT_MATRIX.get(pos, 0)
+                pos_score -= WEIGHT_MATRIX.get((x, y), 0)
+                if (x, y) in CORNERS:
+                    corners_min += 1
+                elif x == 1 or x == 8 or y == 1 or y == 8:
+                    edges_min += 1
 
-        return float(pos_score)
+        # Combinacion de componente posicional y componente geometrica
+        score_geometrico = 25.0 * (corners_max - corners_min) + 5.0 * (edges_max - edges_min)
+        return float(pos_score + score_geometrico)
 
 
 class Solution2(StudentHeuristic):
-    """Heuristica 2: Control de esquinas y bordes.
+    """Heuristica 2: Control de esquinas y bordes [SIN TOCAR - Base].
     
     Se centra exclusivamente en la estabilidad de las piezas: las esquinas
     son permanentes e involteables, y los bordes ofrecen anclajes defensivos.
@@ -127,7 +141,7 @@ class Solution2(StudentHeuristic):
 
 
 class Solution3(StudentHeuristic):
-    """Heuristica 3: Paridad de fichas.
+    """Heuristica 3: Paridad de fichas [SIN TOCAR - Base].
     
     Evalua directamente la diferencia porcentual entre el numero de fichas propias
     y del adversario.
