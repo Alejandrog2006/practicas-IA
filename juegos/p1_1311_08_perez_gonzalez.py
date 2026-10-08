@@ -16,17 +16,17 @@ from tournament import StudentHeuristic
 # Coordenadas de las 4 esquinas del tablero 8x8
 CORNERS = ((1, 1), (8, 1), (1, 8), (8, 8))
 
-# Matriz estatica de ponderacion posicional para Reversi 8x8
-WEIGHT_MATRIX = {
-    (1, 1): 100, (2, 1): -20, (3, 1): 10, (4, 1): 5, (5, 1): 5, (6, 1): 10, (7, 1): -20, (8, 1): 100,
-    (1, 2): -20, (2, 2): -40, (3, 2): -2, (4, 2): -2, (5, 2): -2, (6, 2): -2, (7, 2): -40, (8, 2): -20,
-    (1, 3):  10, (2, 3):  -2, (3, 3):  1, (4, 3): 0, (5, 3): 0, (6, 3):  1, (7, 3):  -2, (8, 3):  10,
-    (1, 4):   5, (2, 4):  -2, (3, 4):  0, (4, 4): 0, (5, 4): 0, (6, 4):  0, (7, 4):  -2, (8, 4):   5,
-    (1, 5):   5, (2, 5):  -2, (3, 5):  0, (4, 5): 0, (5, 5): 0, (6, 5):  0, (7, 5):  -2, (8, 5):   5,
-    (1, 6):  10, (2, 6):  -2, (3, 6):  1, (4, 6): 0, (5, 6): 0, (6, 6):  1, (7, 6):  -2, (8, 6):  10,
-    (1, 7): -20, (2, 7): -40, (3, 7): -2, (4, 7): -2, (5, 7): -2, (6, 7): -2, (7, 7): -40, (8, 7): -20,
-    (1, 8): 100, (2, 8): -20, (3, 8): 10, (4, 8): 5, (5, 8): 5, (6, 8): 10, (7, 8): -20, (8, 8): 100,
-}
+# Matriz estatica de ponderacion posicional para Reversi 8x8.
+BASE_WEIGHTS = (
+    (120, -60, 15, 10, 10, 15, -60, 120),
+    (-60, -25, -5, -5, -5, -5, -25, -60),
+    (15, -5, 5, 2, 2, 5, -5, 15),
+    (10, -5, 2, 1, 1, 2, -5, 10),
+    (10, -5, 2, 1, 1, 2, -5, 10),
+    (15, -5, 5, 2, 2, 5, -5, 15),
+    (-60, -25, -5, -5, -5, -5, -25, -60),
+    (120, -60, 15, 10, 10, 15, -60, 120),
+)
 
 
 def _get_player_labels(state: TwoPlayerGameState):
@@ -54,30 +54,83 @@ def _eval_terminal(state: TwoPlayerGameState):
     return False, 0.0
 
 
-class Solution1(StudentHeuristic):
+class ChampionHeuristic(StudentHeuristic):
     """
-    Analiza la calidad de las posiciones ocupadas en el tablero con
-    una matriz estatica de pesos.
+    Heuristica posicional con ajuste de esquinas y penalizacion de frontera.
     """
 
     def get_name(self) -> str:
-        return "1311_08_posicional"
+        return "1311_08_champion"
 
     def evaluation_function(self, state: TwoPlayerGameState) -> float:
         is_term, term_val = _eval_terminal(state)
         if is_term:
             return term_val
 
-        max_label, min_label = _get_player_labels(state)
+        max_label = state.player_max.label
+        min_label = (
+            state.player2.label
+            if state.player1.label == max_label
+            else state.player1.label
+        )
+        pieces = state.board
+        weights = [list(row) for row in BASE_WEIGHTS]
+
+        corners = ((1, 1), (1, 8), (8, 1), (8, 8))
+        for corner_x, corner_y in corners:
+            corner_piece = pieces.get((corner_x, corner_y))
+            if corner_piece in (max_label, min_label):
+                for x, y in (
+                    (corner_x + (1 if corner_x == 1 else -1), corner_y),
+                    (corner_x, corner_y + (1 if corner_y == 1 else -1)),
+                    (
+                        corner_x + (1 if corner_x == 1 else -1),
+                        corner_y + (1 if corner_y == 1 else -1),
+                    ),
+                ):
+                    weights[y - 1][x - 1] = 15
+
+        my_pieces = 0
+        opponent_pieces = 0
+        my_frontier = 0
+        opponent_frontier = 0
         pos_score = 0.0
 
-        for pos, piece in state.board.items():
-            if piece == max_label:
-                pos_score += WEIGHT_MATRIX.get(pos, 0)
-            elif piece == min_label:
-                pos_score -= WEIGHT_MATRIX.get(pos, 0)
+        for (x, y), piece in pieces.items():
+            if piece == 'O':
+                continue
+            if piece != max_label and piece != min_label:
+                continue
 
-        return float(pos_score)
+            if piece == max_label:
+                my_pieces += 1
+                sign = 1.0
+            else:
+                opponent_pieces += 1
+                sign = -1.0
+
+            pos_score += sign * weights[y - 1][x - 1]
+
+            is_frontier = any(
+                1 <= x + dx <= 8
+                and 1 <= y + dy <= 8
+                and (x + dx, y + dy) not in pieces
+                for dx in (-1, 0, 1)
+                for dy in (-1, 0, 1)
+                if dx != 0 or dy != 0
+            )
+            if is_frontier:
+                if piece == max_label:
+                    my_frontier += 1
+                else:
+                    opponent_frontier += 1
+
+        total_pieces = my_pieces + opponent_pieces
+        if total_pieces > 50:
+            return float((my_pieces - opponent_pieces) * 100.0)
+
+        frontier_score = -(my_frontier - opponent_frontier) * 8.0
+        return float(pos_score + frontier_score)
 
 
 class Solution2(StudentHeuristic):
