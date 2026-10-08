@@ -38,8 +38,8 @@ def from_array_to_dictionary_board(board_array):
     try:
         board_dictionary = dict(
             [((j + 1, i + 1), board_array[i][j])
-             for i in range(n_rows) for j in range(n_columns)
-             if board_array[i][j] != '.']
+            for i in range(n_rows) for j in range(n_columns)
+            if board_array[i][j] != '.']
         )
     except IndexError:
         raise IndexError('Wrong configuration of the board')
@@ -155,7 +155,7 @@ class Reversi(TwoPlayerGame):
     def _coin_diff(self, board: dict) -> float:
         """Difference in the number of coins."""
         return 100 * (self._player_coins(board, self.player2.label) -
-                      self._player_coins(board, self.player1.label)) / len(board)
+                    self._player_coins(board, self.player1.label)) / len(board)
 
     def _choice_diff(self, board: dict) -> float:
         """Difference in the number of choices available."""
@@ -169,7 +169,7 @@ class Reversi(TwoPlayerGame):
     def _corner_diff(self, board: dict) -> float:
         """Difference in the number of corners captured."""
         corner = [board.get((1, 1)), board.get((1, self.height)), board.get((self.width, 1)),
-                  board.get((self.width, self.height))]
+                board.get((self.width, self.height))]
         black_corner = corner.count(self.player1.label)
         white_corner = corner.count(self.player2.label)
         if (black_corner + white_corner) != 0:
@@ -218,8 +218,8 @@ class Reversi(TwoPlayerGame):
             gui_root = state.gui_thread.gui_root
             gui_buttons = state.gui_thread.gui_buttons
             state.game.gui_update(state=state, gui_buttons=gui_buttons,
-                                  gui_root=gui_root, moves=moves,
-                                  click_function=None)
+                                gui_root=gui_root, moves=moves,
+                                click_function=None)
 
     def _matrix_to_display_coordinates(
         self,
