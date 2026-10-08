@@ -1,0 +1,94 @@
+**Stockfish** es el motor número 1 del mundo, pero... **¡de ajedrez!** 
+
+En el mundo de **Reversi / Othello**, el equivalente legendario a Stockfish (o Deep Blue) se llama **Logistello** (creado por Michael Buro en 1997, que aplastó 6-0 al campeón mundial humano Takeshi Murakami).
+
+En un torneo de Reversi de Inteligencia Artificial, las heurísticas que ganan **no son las que intentan comer muchas fichas**. De hecho, ese es el mayor error que comete la gente.
+
+Te explico cómo piensan los motores expertos de Reversi y qué componentes hacen que una heurística gane torneos:
+
+---
+
+### 1. La gran trampa de Reversi: "Comer muchas fichas al principio"
+* Si tu heurística intenta maximizar el número de fichas en los turnos 1 a 40, **va a perder casi siempre**.
+* En Reversi, cuantas más fichas tengas en el centro durante la apertura:
+  * Más opciones de captura le regalas a tu rival.
+  * Menos movimientos legales te quedan a ti.
+* El número de fichas **solo importa en las últimas 5-10 jugadas de la partida** (fase final o *endgame*).
+
+---
+
+### 2. ¿Qué factores hacen ganar una heurística de Reversi?
+
+Las heurísticas ganadoras combinan de **3 a 5 conceptos clave**:
+
+```
+                       PUNTUACIÓN DE UN ESTADO
+                                  │
+      ┌───────────────────────────┼───────────────────────────┐
+      ▼                           ▼                           ▼
+1. ESQUINAS Y BORDES         2. MOVILIDAD              3. MATRIZ POSICIONAL
+  (Casillas estables)   (Ahogar al oponente)         (Valores fijos por casilla)
+```
+
+#### A. Control de Esquinas (El factor más decisivo)
+* Las 4 esquinas `(1,1)`, `(1,8)`, `(8,1)` y `(8,8)` tienen una propiedad matemática única: **una vez capturadas, nadie te las puede quitar jamás**.
+* Quien captura una esquina suele ganar la partida, porque desde la esquina puedes conquistar bordes enteros de forma segura (fichas estables).
+* **En la heurística**: Tener una esquina propia suma muchísimos puntos (ej. $+100$ o $+500$). Si la tiene el rival, resta lo mismo.
+
+#### B. Evitar las "Casillas de la Muerte" (Casillas X y C)
+* Justo al lado de las esquinas están las llamadas casillas **X** (las diagonales a la esquina, como `B2`, `G2`, `B7`, `G7`) y las casillas **C** (adyacentes por fila/columna).
+* Poner una ficha en una casilla X cuando la esquina está vacía es prácticamente **regalarle la esquina al rival en el siguiente turno**.
+* **En la heurística**: Penalización severa (ej. $-50$ o $-100$) si ocupas una casilla X o C mientras la esquina correspondiente siga vacía.
+
+#### C. Movilidad (Control del ritmo)
+* La **movilidad** es el número de movimientos legales que tú tienes frente a los que tiene el rival:
+  $$\text{Movilidad} = 100 \times \frac{\text{MisMovimientos} - \text{SusMovimientos}}{\text{MisMovimientos} + \text{SusMovimientos}}$$
+* En Reversi experto, el objetivo en la apertura y medio juego es **ahogar al rival**: quitarle opciones hasta que no tenga movimientos o se vea forzado a poner una ficha en una casilla X, regalándote una esquina.
+
+#### D. Matriz de Pesos Posicional (Positional Weight Matrix)
+* Asignar un valor numérico fijo a cada una de las 64 casillas del tablero. Las esquinas valen mucho, los bordes son buenos, las casillas adyacentes a esquinas son pésimas, y el centro es neutro:
+
+$$
+\begin{pmatrix}
+ 100 & -20 &  10 &   5 &   5 &  10 & -20 & 100 \\
+ -20 & -50 &  -2 &  -2 &  -2 &  -2 & -50 & -20 \\
+  10 &  -2 &  -1 &  -1 &  -1 &  -1 &  -2 &  10 \\
+   5 &  -2 &  -1 &   0 &   0 &  -1 &  -2 &   5 \\
+   5 &  -2 &  -1 &   0 &   0 &  -1 &  -2 &   5 \\
+  10 &  -2 &  -1 &  -1 &  -1 &  -1 &  -2 &  10 \\
+ -20 & -50 &  -2 &  -2 &  -2 &  -2 & -50 & -20 \\
+ 100 & -20 &  10 &   5 &   5 &  10 & -20 & 100
+\end{pmatrix}
+$$
+
+#### E. Fases de la Partida (Heurística Dinámica)
+* Los pesos de cada factor no deben valer lo mismo en el turno 5 que en el turno 55:
+  * **Apertura (0-20 fichas)**: Prioridad máxima a la **movilidad** y **no caer en casillas X**.
+  * **Medio juego (20-50 fichas)**: Prioridad a **esquinas**, **estabilidad** y **matriz posicional**.
+  * **Final (> 50 fichas)**: Prioridad al **conteo bruto de fichas** (ahí sí, ganar por número de piezas).
+
+---
+
+### 3. Las trampas específicas de ESTE torneo (enunciado de la práctica)
+
+Ten muy en cuenta lo que especifica el profesorado en [`enunciado.txt`](file:///home/arthur/Desktop/IA/practicas-IA/juegos/enunciado.txt):
+
+1. **Límite de Tiempo (Timeout = Descalificación)**:
+   > *"Aquellos jugadores que tarden más que 10 veces lo que tarda la heurística trivial [...] muy probablemente serán eliminados por timeout."*
+   * Tu función de evaluación se va a llamar miles de veces por cada turno de Minimax.
+   * **No hagas cálculos pesados** (bucles complejos o algoritmos recursivos lentos dentro de la heurística). Usar tablas precalculadas (como la matriz de pesos) es instantáneo en Python y vuela.
+2. **Profundidad de Minimax ($\le 4$)**:
+   * Las partidas del torneo se jugarán a profundidad 3 o 4. Con poda alfa-beta bien hecha, una función de evaluación limpia y rápida te permitirá llegar a profundidad 4 sin consumir tiempo.
+3. **Tableros con Obstáculos**:
+   * En el torneo habrá tableros con obstáculos en `B1`, `H2`, `A7`, `G8`.
+   * Tu heurística debe tener cuidado de no asumir ciegamente casillas fijas si están bloqueadas por un obstáculo `'O'`.
+
+---
+
+### Resumen: La fórmula que mejor suele funcionar en la práctica
+
+Para [`p1_gggg_mm_apellido1_apellido2.py`](file:///home/arthur/Desktop/IA/practicas-IA/juegos/p1_gggg_mm_apellido1_apellido2.py), una de las mejores soluciones suele ser una combinación lineal ponderada:
+
+$$\text{Valor} = w_1 \cdot \text{Esquinas} + w_2 \cdot \text{EvitarCasillasX} + w_3 \cdot \text{Movilidad} + w_4 \cdot \text{MatrizPesos}$$
+
+Además, en la memoria de la práctica piden **citar artículos en formato APA** que justifiquen vuestra heurística: podéis citar directamente el artículo clásico de Michael Buro sobre Logistello (*"The Run-Through Experiments: Evaluation Functions for Othello"*, Buro, 1997).

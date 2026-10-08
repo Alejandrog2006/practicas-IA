@@ -1,0 +1,1953 @@
+{
+  "python": "3.12.13 (main, May 10 2026, 19:30:01) [Clang 22.1.3 ]",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "numpy": "2.5.3",
+  "motor": "/tmp/p1_motor_original",
+  "submission": "/home/arthur/Desktop/IA/P1/practicas-IA/juegos/entregas/entrega_1/p1_1311_08_perez_gonzalez.py",
+  "sha256": "95e1c2266dc1556ba71b5daf15f45f55c0b0b610afebf8972145402acfc783d4",
+  "obstacles": [
+    [
+      2,
+      1
+    ],
+    [
+      8,
+      2
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "benchmarks": [
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 0.08178520833250029,
+      "ratio_dummy": 1.0,
+      "us_min": 0.08082175000367897,
+      "us_max": 0.08330829166425247
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 2.40259674999758,
+      "ratio_dummy": 29.376910556120965,
+      "us_min": 2.3290862500005005,
+      "us_max": 2.4244260416660763
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 2.933080875000845,
+      "ratio_dummy": 35.86321945988466,
+      "us_min": 2.840237666665265,
+      "us_max": 2.958514125002883
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 1.5549521250003788,
+      "ratio_dummy": 19.012632683879378,
+      "us_min": 1.5327577499988365,
+      "us_max": 1.5671047916706962
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 89.46502569442158,
+      "ratio_dummy": 1.0,
+      "us_min": 87.64748333334182,
+      "us_max": 93.69805763894432
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 94.45133541663924,
+      "ratio_dummy": 1.0557347374967399,
+      "us_min": 90.79302569448247,
+      "us_max": 96.11415972214685
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 93.29767708337044,
+      "ratio_dummy": 1.0428396611882698,
+      "us_min": 91.609424305577,
+      "us_max": 96.26708541669397
+    },
+    {
+      "board": "standard",
+      "phase": "early",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 90.87612152774858,
+      "ratio_dummy": 1.015772597418647,
+      "us_min": 90.20803749998487,
+      "us_max": 96.69587430557334
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 0.08460066666771127,
+      "ratio_dummy": 1.0,
+      "us_min": 0.08337200000122873,
+      "us_max": 0.09022662500039283
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 4.8203096250034605,
+      "ratio_dummy": 56.9772061482251,
+      "us_min": 4.672937999998794,
+      "us_max": 4.840510666667797
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 6.145277458334893,
+      "ratio_dummy": 72.6386410460794,
+      "us_min": 5.994190000000306,
+      "us_max": 6.262800166666693
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 2.3801895833344133,
+      "ratio_dummy": 28.134406938932997,
+      "us_min": 2.335874708331668,
+      "us_max": 2.590060041664325
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 121.09412430550353,
+      "ratio_dummy": 1.0,
+      "us_min": 118.02297916669129,
+      "us_max": 124.75748888892075
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 129.88306805554984,
+      "ratio_dummy": 1.0725794401706317,
+      "us_min": 124.70304375003454,
+      "us_max": 139.49861250005648
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 129.19902777781545,
+      "ratio_dummy": 1.066930608886228,
+      "us_min": 125.79636874995181,
+      "us_max": 132.80513194449856
+    },
+    {
+      "board": "standard",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 122.98998402771291,
+      "ratio_dummy": 1.015656083505971,
+      "us_min": 121.57649930557568,
+      "us_max": 127.35371805558455
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 0.08232462499790927,
+      "ratio_dummy": 1.0,
+      "us_min": 0.08030887500372803,
+      "us_max": 0.08365891666528569
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 6.857348624999797,
+      "ratio_dummy": 83.296445324518,
+      "us_min": 6.691154208335584,
+      "us_max": 6.953604458331597
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 8.964068749998924,
+      "ratio_dummy": 108.8868458280445,
+      "us_min": 8.716965000000224,
+      "us_max": 9.903751750002243
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 3.0012739999989435,
+      "ratio_dummy": 36.45657663275313,
+      "us_min": 2.9232237499977978,
+      "us_max": 3.291232916666331
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 148.51395555552926,
+      "ratio_dummy": 1.0,
+      "us_min": 146.96505486110962,
+      "us_max": 152.42539305554538
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 157.21142916673455,
+      "ratio_dummy": 1.0585633422709109,
+      "us_min": 154.70571944441582,
+      "us_max": 160.3487027777659
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 159.1102055555559,
+      "ratio_dummy": 1.0713485137500407,
+      "us_min": 157.08058611115425,
+      "us_max": 159.7682944444993
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 157.40335347223953,
+      "ratio_dummy": 1.0598556403905528,
+      "us_min": 151.32993749994563,
+      "us_max": 164.27951666663097
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 4,
+      "us_median": 0.09639674999561976,
+      "ratio_dummy": 1.0,
+      "us_min": 0.09398887499401098,
+      "us_max": 0.1313827500126763
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 4,
+      "us_median": 1.728896375013278,
+      "ratio_dummy": 17.935214362432745,
+      "us_min": 1.6919154999897046,
+      "us_max": 1.8362158750022672
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 4,
+      "us_median": 1.690993874987612,
+      "ratio_dummy": 17.542021645589195,
+      "us_min": 1.6845101250027028,
+      "us_max": 1.808818124999334
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 4,
+      "us_median": 1.6920240000075637,
+      "ratio_dummy": 17.552707950054838,
+      "us_min": 1.6871088749894625,
+      "us_max": 1.873789374997159
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 4,
+      "us_median": 163.36767291657375,
+      "ratio_dummy": 1.0,
+      "us_min": 162.3583416666463,
+      "us_max": 170.001087499827
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 4,
+      "us_median": 166.2119062501688,
+      "ratio_dummy": 1.0174100131489754,
+      "us_min": 164.99273958340646,
+      "us_max": 170.27606041679633
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 4,
+      "us_median": 168.27923958331326,
+      "ratio_dummy": 1.0300644954969007,
+      "us_min": 166.35575208330997,
+      "us_max": 173.24440833329885
+    },
+    {
+      "board": "standard",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 4,
+      "us_median": 166.98145000001813,
+      "ratio_dummy": 1.0221205151479986,
+      "us_min": 165.73116041674515,
+      "us_max": 167.67204166659627
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 0.0825107916663607,
+      "ratio_dummy": 1.0,
+      "us_min": 0.08126037500251944,
+      "us_max": 0.08301312500217742
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 2.5554834999989375,
+      "ratio_dummy": 30.97150625256693,
+      "us_min": 2.496902708334877,
+      "us_max": 2.5964917500023907
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 3.1257017916648997,
+      "ratio_dummy": 37.8823391284856,
+      "us_min": 3.033132041669736,
+      "us_max": 3.4750951666637775
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 1.6749271249996887,
+      "ratio_dummy": 20.299491632226687,
+      "us_min": 1.6336139999992838,
+      "us_max": 1.7154542083327822
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 95.0307541666954,
+      "ratio_dummy": 1.0,
+      "us_min": 94.38001874997326,
+      "us_max": 101.27713124998333
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 98.10724791666163,
+      "ratio_dummy": 1.0323736644725525,
+      "us_min": 97.34785972226076,
+      "us_max": 98.93889652777452
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 98.7284722221994,
+      "ratio_dummy": 1.0389107514501859,
+      "us_min": 98.13517847226827,
+      "us_max": 106.72691111111021
+    },
+    {
+      "board": "obstacles",
+      "phase": "early",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 97.33984583333053,
+      "ratio_dummy": 1.0242983620079948,
+      "us_min": 96.47495555561312,
+      "us_max": 113.57219861112513
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 0.08429324999781329,
+      "ratio_dummy": 1.0,
+      "us_min": 0.08379408333307006,
+      "us_max": 0.08504266666875537
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 4.925699541667919,
+      "ratio_dummy": 58.43527852818228,
+      "us_min": 4.801133999999744,
+      "us_max": 5.307487791668564
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 6.203054750002934,
+      "ratio_dummy": 73.58898547824236,
+      "us_min": 6.117329249998231,
+      "us_max": 6.265977041664428
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 2.5033900416673305,
+      "ratio_dummy": 29.69858252863987,
+      "us_min": 2.486713958328816,
+      "us_max": 2.5251410000019328
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 125.9964708332796,
+      "ratio_dummy": 1.0,
+      "us_min": 125.02702013890145,
+      "us_max": 127.6454576389104
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 131.37233125001381,
+      "ratio_dummy": 1.0426667539271606,
+      "us_min": 130.66800763886653,
+      "us_max": 136.9390333333658
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 134.09164583330204,
+      "ratio_dummy": 1.0642492202081921,
+      "us_min": 132.12106736114984,
+      "us_max": 151.9061048610758
+    },
+    {
+      "board": "obstacles",
+      "phase": "middle",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 129.98130347223005,
+      "ratio_dummy": 1.0316265417007056,
+      "us_min": 128.7978944443719,
+      "us_max": 131.81086250000362
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 0.0843484166637154,
+      "ratio_dummy": 1.0,
+      "us_min": 0.08172125000290484,
+      "us_max": 0.09672862500072672
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 6.88110904166687,
+      "ratio_dummy": 81.57958754698181,
+      "us_min": 6.83179625000226,
+      "us_max": 7.209435166667315
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 9.08835975000007,
+      "ratio_dummy": 107.74784055798,
+      "us_min": 8.830153916666935,
+      "us_max": 10.28754683332996
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 3.154077416667178,
+      "ratio_dummy": 37.39343951460305,
+      "us_min": 3.1083248750007897,
+      "us_max": 3.2109494166642585
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 12,
+      "us_median": 154.00983055558174,
+      "ratio_dummy": 1.0,
+      "us_min": 152.62344722223196,
+      "us_max": 159.24488680557008
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 12,
+      "us_median": 164.0996840277372,
+      "ratio_dummy": 1.0655143469462753,
+      "us_min": 159.9048749999573,
+      "us_max": 169.3281500000094
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 12,
+      "us_median": 163.3596513888354,
+      "ratio_dummy": 1.0607092469326453,
+      "us_min": 162.3090430555073,
+      "us_max": 177.32448680555356
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 12,
+      "us_median": 158.02740347218167,
+      "ratio_dummy": 1.026086470598057,
+      "us_min": 156.31779513888156,
+      "us_max": 164.28239375001237
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "dummy",
+      "states": 4,
+      "us_median": 0.09181275000003097,
+      "ratio_dummy": 1.0,
+      "us_min": 0.0890967500026818,
+      "us_max": 0.11006500000121378
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "1311_08_posicional",
+      "states": 4,
+      "us_median": 1.7631632500041405,
+      "ratio_dummy": 19.203904141892554,
+      "us_min": 1.7328370000058158,
+      "us_max": 1.8203185000089661
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "1311_08_esquinas_bordes",
+      "states": 4,
+      "us_median": 1.7634176249998745,
+      "ratio_dummy": 19.206674726541568,
+      "us_min": 1.738450000004832,
+      "us_max": 1.8722960000019384
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": false,
+      "name": "1311_08_paridad_fichas",
+      "states": 4,
+      "us_median": 1.7411557499968922,
+      "ratio_dummy": 18.964204317987477,
+      "us_min": 1.7302587500012123,
+      "us_max": 1.8884378749959296
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "dummy",
+      "states": 4,
+      "us_median": 165.10548541669814,
+      "ratio_dummy": 1.0,
+      "us_min": 163.35309791652244,
+      "us_max": 166.47139166655242
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "1311_08_posicional",
+      "states": 4,
+      "us_median": 166.69960833321323,
+      "ratio_dummy": 1.0096551783999894,
+      "us_min": 166.2476375000684,
+      "us_max": 169.73811041675427
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "1311_08_esquinas_bordes",
+      "states": 4,
+      "us_median": 168.04067291668426,
+      "ratio_dummy": 1.017777649801145,
+      "us_min": 167.01230833338818,
+      "us_max": 170.2012000000271
+    },
+    {
+      "board": "obstacles",
+      "phase": "terminal",
+      "wrapped": true,
+      "name": "1311_08_paridad_fichas",
+      "states": 4,
+      "us_median": 167.038360416664,
+      "ratio_dummy": 1.0117069096468092,
+      "us_min": 166.31494583355294,
+      "us_max": 169.80211458346162
+    }
+  ],
+  "moves": [
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 3,
+      "name": "dummy",
+      "seconds": 0.01588869900001555,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 3,
+      "name": "1311_08_posicional",
+      "seconds": 0.016880482999908963,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 3,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.01602802399997927,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 3,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.016024089999973512,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 4,
+      "name": "dummy",
+      "seconds": 0.07427003199995852,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 4,
+      "name": "1311_08_posicional",
+      "seconds": 0.07589013100005104,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 4,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.0762355420000631,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "initial",
+      "depth": 4,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.07895631500002764,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "dummy",
+      "seconds": 1.51248031800003,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "1311_08_posicional",
+      "seconds": 1.5426725679999436,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 1.5168309700000009,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 1.5191056369999387,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "dummy",
+      "seconds": 18.518244930000037,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "1311_08_posicional",
+      "seconds": 18.520960962999993,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 18.529460469000014,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 18.32577607799999,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 3,
+      "name": "dummy",
+      "seconds": 0.01826998299998195,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 3,
+      "name": "1311_08_posicional",
+      "seconds": 0.017538811000008536,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 3,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.01761488499994357,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 3,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.017944881000062196,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 4,
+      "name": "dummy",
+      "seconds": 0.034382380000010926,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 4,
+      "name": "1311_08_posicional",
+      "seconds": 0.03653029899999183,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 4,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.03688444600004459,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "standard",
+      "phase": "late",
+      "depth": 4,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.034604976999958126,
+      "branching": 6,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 3,
+      "name": "dummy",
+      "seconds": 0.02516697299995485,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 3,
+      "name": "1311_08_posicional",
+      "seconds": 0.025443483999993077,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 3,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.02546751900001709,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 3,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.0271605240000099,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 4,
+      "name": "dummy",
+      "seconds": 0.1141616239999621,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 4,
+      "name": "1311_08_posicional",
+      "seconds": 0.11689852999995765,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 4,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.11678600600009759,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "initial",
+      "depth": 4,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.11404874300001211,
+      "branching": 4,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "dummy",
+      "seconds": 1.1340451590000384,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "1311_08_posicional",
+      "seconds": 1.1930448900000101,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 1.202482133999979,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 3,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 1.1441853230001016,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "dummy",
+      "seconds": 11.243830573000082,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "1311_08_posicional",
+      "seconds": 11.815530964999994,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 11.659457259999954,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "high_branching",
+      "depth": 4,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 11.479020787000081,
+      "branching": 17,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 3,
+      "name": "dummy",
+      "seconds": 0.04745495099996333,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 3,
+      "name": "1311_08_posicional",
+      "seconds": 0.04505622500005302,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 3,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.046381166999935886,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 3,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.04447929399998429,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 4,
+      "name": "dummy",
+      "seconds": 0.16793918700000177,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 4,
+      "name": "1311_08_posicional",
+      "seconds": 0.17388473400001203,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 4,
+      "name": "1311_08_esquinas_bordes",
+      "seconds": 0.1731842899999947,
+      "branching": 5,
+      "timed_out": false
+    },
+    {
+      "board": "obstacles",
+      "phase": "late",
+      "depth": 4,
+      "name": "1311_08_paridad_fichas",
+      "seconds": 0.16895753000005698,
+      "branching": 5,
+      "timed_out": false
+    }
+  ],
+  "random_games": [
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        42.0,
+        22.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005987037000068085
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        42.0,
+        22.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005667542999958641
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 2,
+      "outcome": "win",
+      "scores": [
+        44.0,
+        20.0
+      ],
+      "plies": 62,
+      "max_move_seconds": 0.0061206970000284855
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        40.0,
+        24.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.0061841230000254654
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        38.0,
+        26.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.0055576669999481965
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 0,
+      "outcome": "draw",
+      "scores": [
+        32.0,
+        32.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005922253999983695
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        30.0,
+        34.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.005459353999981431
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 2,
+      "outcome": "win",
+      "scores": [
+        10.0,
+        54.0
+      ],
+      "plies": 62,
+      "max_move_seconds": 0.007581322000078217
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        31.0,
+        33.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.006868406999956278
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        24.0,
+        40.0
+      ],
+      "plies": 62,
+      "max_move_seconds": 0.0061006550000684
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        53.0,
+        11.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005225845999916601
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        50.0,
+        14.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.004817517999981646
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 2,
+      "outcome": "win",
+      "scores": [
+        33.0,
+        31.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.004630894000001717
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        49.0,
+        0.0
+      ],
+      "plies": 45,
+      "max_move_seconds": 0.003961837999895579
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 4,
+      "outcome": "loss",
+      "scores": [
+        29.0,
+        35.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005418110999926284
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        11.0,
+        53.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.005426628999998684
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        18.0,
+        46.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.005574652000063907
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 2,
+      "outcome": "win",
+      "scores": [
+        12.0,
+        52.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005028519999996206
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        19.0,
+        45.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.00556189799999629
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 4,
+      "outcome": "loss",
+      "scores": [
+        35.0,
+        29.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.007354767999913747
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        40.0,
+        24.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.006464523999966332
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        41.0,
+        23.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.005558743999927174
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 2,
+      "outcome": "win",
+      "scores": [
+        18.0,
+        0.0
+      ],
+      "plies": 15,
+      "max_move_seconds": 0.003077708999967399
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 3,
+      "outcome": "loss",
+      "scores": [
+        24.0,
+        40.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.007984932999988814
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        49.0,
+        15.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.0066997679999758475
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 0,
+      "outcome": "loss",
+      "scores": [
+        34.0,
+        30.0
+      ],
+      "plies": 61,
+      "max_move_seconds": 0.005278519000057713
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        27.0,
+        37.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.006290186000001086
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 2,
+      "outcome": "loss",
+      "scores": [
+        35.0,
+        29.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.005450712000083513
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        0.0,
+        28.0
+      ],
+      "plies": 24,
+      "max_move_seconds": 0.003840852000053019
+    },
+    {
+      "board": "standard",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        19.0,
+        45.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.00537893399996392
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        33.0,
+        27.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.006368655000073886
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        41.0,
+        19.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.005906144000050517
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 2,
+      "outcome": "loss",
+      "scores": [
+        29.0,
+        31.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.007762038000009852
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 3,
+      "outcome": "loss",
+      "scores": [
+        29.0,
+        31.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.005724181999994471
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "black",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        31.0,
+        29.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.006107673999963481
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 0,
+      "outcome": "loss",
+      "scores": [
+        34.0,
+        26.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.00542540900005406
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        23.0,
+        37.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.008464857999911146
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 2,
+      "outcome": "draw",
+      "scores": [
+        30.0,
+        30.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.006913525999948433
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        11.0,
+        49.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.00515223699994749
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_posicional",
+      "color": "white",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        25.0,
+        35.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.008870487999956822
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 0,
+      "outcome": "loss",
+      "scores": [
+        29.0,
+        31.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.005137038000043503
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        42.0,
+        17.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.0059185569999726795
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 2,
+      "outcome": "win",
+      "scores": [
+        39.0,
+        21.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.006659863999971094
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        40.0,
+        20.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.00474961199995505
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "black",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        34.0,
+        26.0
+      ],
+      "plies": 58,
+      "max_move_seconds": 0.00608554500001901
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        5.0,
+        53.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.005449553000062224
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 1,
+      "outcome": "loss",
+      "scores": [
+        36.0,
+        24.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.006285577000085141
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 2,
+      "outcome": "loss",
+      "scores": [
+        35.0,
+        25.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.006228527999951439
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 3,
+      "outcome": "win",
+      "scores": [
+        18.0,
+        42.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.006139248999943447
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_esquinas_bordes",
+      "color": "white",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        24.0,
+        36.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.005357413999945493
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        32.0,
+        28.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.0073092720000431655
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        44.0,
+        16.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.0062663070000326115
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 2,
+      "outcome": "loss",
+      "scores": [
+        23.0,
+        37.0
+      ],
+      "plies": 60,
+      "max_move_seconds": 0.005671548999998777
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 3,
+      "outcome": "loss",
+      "scores": [
+        21.0,
+        39.0
+      ],
+      "plies": 58,
+      "max_move_seconds": 0.008630068000002211
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "black",
+      "seed": 4,
+      "outcome": "loss",
+      "scores": [
+        22.0,
+        38.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.006259650999936639
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 0,
+      "outcome": "win",
+      "scores": [
+        28.0,
+        32.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.00868574899993746
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 1,
+      "outcome": "win",
+      "scores": [
+        16.0,
+        44.0
+      ],
+      "plies": 56,
+      "max_move_seconds": 0.00457178900001054
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 2,
+      "outcome": "loss",
+      "scores": [
+        53.0,
+        7.0
+      ],
+      "plies": 59,
+      "max_move_seconds": 0.006957747000001291
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 3,
+      "outcome": "loss",
+      "scores": [
+        31.0,
+        29.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.007180292000043664
+    },
+    {
+      "board": "obstacles",
+      "name": "1311_08_paridad_fichas",
+      "color": "white",
+      "seed": 4,
+      "outcome": "win",
+      "scores": [
+        27.0,
+        33.0
+      ],
+      "plies": 57,
+      "max_move_seconds": 0.005938760000049115
+    }
+  ],
+  "validation": {
+    "states": 476,
+    "heuristic_checks": 1428,
+    "finite_pure_antisymmetric_terminal": true
+  }
+}

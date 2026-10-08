@@ -1,0 +1,16 @@
+{
+  "p1_1311_08_perez_gonzalez.py": [
+    {
+      "class": "Solution1",
+      "name": "1311_08_posicional"
+    },
+    {
+      "class": "Solution2",
+      "name": "1311_08_esquinas_bordes"
+    },
+    {
+      "class": "Solution3",
+      "name": "1311_08_paridad_fichas"
+    }
+  ]
+}

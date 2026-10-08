@@ -1,0 +1,79 @@
+{
+  "sha256": "d070f02c52b3751896e9479893227a9ba1efe5be3abeda8f5c9be0600d5b8d02",
+  "submission": "/home/arthur/Desktop/IA/P1/practicas-IA/extra/entregas/entrega_1/p1_1311_08_perez_gonzalez.py",
+  "classes": [
+    "Solution1",
+    "Solution2",
+    "Solution3"
+  ],
+  "manual_checks": 36,
+  "completed_matches": 12,
+  "tournaments": [
+    {
+      "board": "standard",
+      "games": 6,
+      "seconds": 1.2157222219998403,
+      "scores": {
+        "baseline_dummy": {
+          "submission_1311_08_posicional": 0,
+          "submission_1311_08_esquinas_bordes": 1,
+          "submission_1311_08_paridad_fichas": 0
+        },
+        "submission_1311_08_posicional": {
+          "baseline_dummy": 2
+        },
+        "submission_1311_08_esquinas_bordes": {
+          "baseline_dummy": 1
+        },
+        "submission_1311_08_paridad_fichas": {
+          "baseline_dummy": 2
+        }
+      },
+      "totals": {
+        "baseline_dummy": 1,
+        "submission_1311_08_posicional": 2,
+        "submission_1311_08_esquinas_bordes": 1,
+        "submission_1311_08_paridad_fichas": 2
+      },
+      "names": {
+        "baseline_dummy": "dummy",
+        "submission_1311_08_posicional": "1311_08_posicional",
+        "submission_1311_08_esquinas_bordes": "1311_08_esquinas_bordes",
+        "submission_1311_08_paridad_fichas": "1311_08_paridad_fichas"
+      }
+    },
+    {
+      "board": "obstacles",
+      "games": 6,
+      "seconds": 1.246589619000133,
+      "scores": {
+        "baseline_dummy": {
+          "submission_1311_08_posicional": 0,
+          "submission_1311_08_esquinas_bordes": 0,
+          "submission_1311_08_paridad_fichas": 1
+        },
+        "submission_1311_08_posicional": {
+          "baseline_dummy": 2
+        },
+        "submission_1311_08_esquinas_bordes": {
+          "baseline_dummy": 2
+        },
+        "submission_1311_08_paridad_fichas": {
+          "baseline_dummy": 1
+        }
+      },
+      "totals": {
+        "baseline_dummy": 1,
+        "submission_1311_08_posicional": 2,
+        "submission_1311_08_esquinas_bordes": 2,
+        "submission_1311_08_paridad_fichas": 1
+      },
+      "names": {
+        "baseline_dummy": "dummy",
+        "submission_1311_08_posicional": "1311_08_posicional",
+        "submission_1311_08_esquinas_bordes": "1311_08_esquinas_bordes",
+        "submission_1311_08_paridad_fichas": "1311_08_paridad_fichas"
+      }
+    }
+  ]
+}
