@@ -13,13 +13,13 @@ from reversi import Reversi
 from reversi import create_standard_board
 from strategy import MinimaxAlphaBetaStrategy
 from p1_1311_08_perez_gonzalez import (
-    ChampionHeuristic,
-    Solution2,
-    Solution3,
+    EinsteinyTesla,
+    FarmeoAura,
+    JoeBidenHeuristic,
 )
 
 
-HEURISTICS = (ChampionHeuristic, Solution2, Solution3)
+HEURISTICS = (JoeBidenHeuristic, EinsteinyTesla, FarmeoAura)
 
 
 def build_positions(count, plies, seed):
@@ -142,14 +142,15 @@ def run_benchmark(depth, positions_count=1, plies=8, seed=131108):
             f"{values['wins']}V {values['draws']}E {values['losses']}D"
         )
 
-    champion = ChampionHeuristic().get_name()
-    champion_position = next(
+    best_heuristic = HEURISTICS[0]
+    best_name = best_heuristic().get_name()
+    best_position = next(
         position for position, (name, _) in enumerate(ranking, start=1)
-        if name == champion
+        if name == best_name
     )
     print(
-        f"\nChampionHeuristic: puesto {champion_position}/{len(ranking)} "
-        f"({totals[champion]['points']} puntos)"
+        f"\n{best_heuristic.__name__}: puesto {best_position}/{len(ranking)} "
+        f"({totals[best_name]['points']} puntos)"
     )
 
 
