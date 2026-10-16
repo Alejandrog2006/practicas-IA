@@ -4,9 +4,9 @@ from game import Player, TwoPlayerGameState
 from reversi import Reversi
 from strategy import RandomStrategy
 from p1_1311_08_perez_gonzalez import (
-    EinsteinyTesla,
-    FarmeoAura,
-    JoeBidenHeuristic,
+    Bulin47Heuristic,
+    IMSERSOheuristic,
+    JeanDelPozoHeuristic,
 )
 
 
@@ -25,9 +25,9 @@ def make_state(board, max_player="B"):
     )
 
 
-class JoeBidenHeuristicTest(unittest.TestCase):
+class JeanDelPozoHeuristicTest(unittest.TestCase):
     def test_api_and_initial_position(self):
-        heuristic = JoeBidenHeuristic()
+        heuristic = JeanDelPozoHeuristic()
         state = make_state({
             (4, 4): "W",
             (5, 5): "W",
@@ -35,15 +35,15 @@ class JoeBidenHeuristicTest(unittest.TestCase):
             (5, 4): "B",
         })
 
-        self.assertEqual(heuristic.get_name(), "JoeBidenHeuristic")
+        self.assertEqual(heuristic.get_name(), "JeanDelPozoHeuristic")
         self.assertIsInstance(heuristic.evaluation_function(state), float)
 
     def test_uses_player_max_perspective(self):
         board = {(2, 2): "B", (3, 3): "W"}
-        value_for_black = JoeBidenHeuristic().evaluation_function(
+        value_for_black = JeanDelPozoHeuristic().evaluation_function(
             make_state(board, max_player="B")
         )
-        value_for_white = JoeBidenHeuristic().evaluation_function(
+        value_for_white = JeanDelPozoHeuristic().evaluation_function(
             make_state(board, max_player="W")
         )
 
@@ -57,9 +57,9 @@ class JoeBidenHeuristicTest(unittest.TestCase):
         ):
             board[position] = "B" if index < 40 else "W"
 
-        value = JoeBidenHeuristic().evaluation_function(make_state(board))
+        value = Bulin47Heuristic().evaluation_function(make_state(board))
 
-        self.assertEqual(value, 1600.0)
+        self.assertEqual(value, 2440.0)
 
     def test_terminal_result_dominates_positional_score(self):
         state = make_state({(1, 1): "W", (2, 2): "B"})
@@ -67,7 +67,7 @@ class JoeBidenHeuristicTest(unittest.TestCase):
         state.scores = [20, 40]
 
         self.assertEqual(
-            JoeBidenHeuristic().evaluation_function(state),
+            JeanDelPozoHeuristic().evaluation_function(state),
             -10020.0,
         )
 
@@ -75,7 +75,11 @@ class JoeBidenHeuristicTest(unittest.TestCase):
 class OtherHeuristicsTest(unittest.TestCase):
     def test_all_heuristics_have_tournament_api(self):
         state = make_state({(1, 1): "B", (8, 8): "W"})
-        heuristics = (JoeBidenHeuristic(), EinsteinyTesla(), FarmeoAura())
+        heuristics = (
+            JeanDelPozoHeuristic(),
+            IMSERSOheuristic(),
+            Bulin47Heuristic(),
+        )
 
         for heuristic in heuristics:
             with self.subTest(heuristic=heuristic.__class__.__name__):
@@ -91,8 +95,8 @@ class OtherHeuristicsTest(unittest.TestCase):
         state.scores = [10, 6]
 
         expected = -10004.0
-        self.assertEqual(EinsteinyTesla().evaluation_function(state), expected)
-        self.assertEqual(FarmeoAura().evaluation_function(state), expected)
+        self.assertEqual(IMSERSOheuristic().evaluation_function(state), expected)
+        self.assertEqual(Bulin47Heuristic().evaluation_function(state), expected)
 
 
 if __name__ == "__main__":

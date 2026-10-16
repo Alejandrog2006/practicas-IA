@@ -13,16 +13,16 @@ from game import TwoPlayerGameState
 from tournament import StudentHeuristic
 
 
-# Matriz estatica corregida: X-squares (-65) mas penalizadas que C-squares (-25)
+# Matriz estatica de ponderacion posicional para Reversi 8x8
 BASE_WEIGHTS = (
-    (120, -25,  20,  10,  10,  20, -25, 120),
-    (-25, -65,  -5,  -5,  -5,  -5, -65, -25),
-    ( 20,  -5,  15,   3,   3,  15,  -5,  20),
-    ( 10,  -5,   3,   1,   1,   3,  -5,  10),
-    ( 10,  -5,   3,   1,   1,   3,  -5,  10),
-    ( 20,  -5,  15,   3,   3,  15,  -5,  20),
-    (-25, -65,  -5,  -5,  -5,  -5, -65, -25),
-    (120, -25,  20,  10,  10,  20, -25, 120),
+    (120, -28,  20,  10,  10,  20, -28, 120),
+    (-28, -75,  -6,  -4,  -4,  -6, -75, -28),
+    ( 20,  -6,  15,   3,   3,  15,  -6,  20),
+    ( 10,  -4,   3,   1,   1,   3,  -4,  10),
+    ( 10,  -4,   3,   1,   1,   3,  -4,  10),
+    ( 20,  -6,  15,   3,   3,  15,  -6,  20),
+    (-28, -75,  -6,  -4,  -4,  -6, -75, -28),
+    (120, -28,  20,  10,  10,  20, -28, 120),
 )
 
 DIRECTIONS = (
@@ -56,10 +56,72 @@ def _eval_terminal(state: TwoPlayerGameState):
     return False, 0.0
 
 
+def _edge_stability(board, max_label, min_label, width=8, height=8):
+    """
+    Cuenta fichas estables (indestructibles) en los 4 bordes ancladas a una
+    esquina ocupada o protegidas directamente por un obstaculo 'O'.
+    """
+    edge_scans = (
+        # Borde superior (izquierda a derecha y derecha a izquierda)
+        (1, 1, 1, 0, width), (width, 1, -1, 0, width),
+        # Borde inferior
+        (1, height, 1, 0, width), (width, height, -1, 0, width),
+        # Borde izquierdo
+        (1, 1, 0, 1, height), (1, height, 0, -1, height),
+        # Borde derecho
+        (width, 1, 0, 1, height), (width, height, 0, -1, height),
+    )
+
+    stable_coords_max = set()
+    stable_coords_min = set()
+
+    for sx, sy, dx, dy, length in edge_scans:
+        anchored = False
+        curr_owner = None
+
+        for step in range(length):
+            cx, cy = sx + step * dx, sy + step * dy
+            p = board.get((cx, cy))
+
+            if p == 'O':
+                # Un obstaculo bloquea la linea de captura y sirve de ancla
+                anchored = True
+                curr_owner = None
+                continue
+
+            if step == 0 and p in (max_label, min_label):
+                # La propia esquina esta ocupada: sirve de ancla inicial
+                anchored = True
+                curr_owner = p
+
+            if not anchored:
+                continue
+
+            if p is None:
+                # Se rompe la cadena de estabilidad hasta encontrar otro obstaculo
+                anchored = False
+                curr_owner = None
+                continue
+
+            if curr_owner is None:
+                curr_owner = p
+
+            if p == curr_owner:
+                if p == max_label:
+                    stable_coords_max.add((cx, cy))
+                elif p == min_label:
+                    stable_coords_min.add((cx, cy))
+            else:
+                anchored = False
+                curr_owner = None
+
+    return len(stable_coords_max), len(stable_coords_min)
+
+
 def _board_features(board, max_label, min_label, width=8, height=8):
     """
-    Calcula rasgos del tablero en una sola pasada en O(N),
-    incluyendo ajuste dinamico de casillas X/C cuando la esquina esta ocupada.
+    Calcula rasgos del tablero en una sola pasada O(N) y recolecta
+    las casillas vacias adyacentes para acelerar el calculo de movilidad.
     """
     max_pieces = min_pieces = 0
     max_corners = min_corners = 0
@@ -67,13 +129,20 @@ def _board_features(board, max_label, min_label, width=8, height=8):
     max_frontier = min_frontier = 0
     max_danger = min_danger = 0
     positional = 0.0
+    empty_candidates = set()
 
-    # Mapa rapido de casillas X/C asociadas a su esquina
-    corner_map = {
-        (1, 2): (1, 1), (2, 1): (1, 1), (2, 2): (1, 1),
-        (width - 1, 1): (width, 1), (width, 2): (width, 1), (width - 1, 2): (width, 1),
-        (1, height - 1): (1, height), (2, height): (1, height), (2, height - 1): (1, height),
-        (width - 1, height): (width, height), (width, height - 1): (width, height), (width - 1, height - 1): (width, height),
+    # Mapa de casillas X (mas graves: factor 2) y casillas C (factor 1)
+    x_squares = {
+        (2, 2): (1, 1),
+        (width - 1, 2): (width, 1),
+        (2, height - 1): (1, height),
+        (width - 1, height - 1): (width, height),
+    }
+    c_squares = {
+        (1, 2): (1, 1), (2, 1): (1, 1),
+        (width - 1, 1): (width, 1), (width, 2): (width, 1),
+        (1, height - 1): (1, height), (2, height): (1, height),
+        (width - 1, height): (width, height), (width, height - 1): (width, height),
     }
 
     for (x, y), piece in board.items():
@@ -87,33 +156,44 @@ def _board_features(board, max_label, min_label, width=8, height=8):
             # Ignorar obstaculos 'O'
             continue
 
-        # 1. Esquinas, bordes seguros y casillas peligrosas (X/C)
+        # 1. Esquinas, casillas X, casillas C y bordes
         if x in (1, width) and y in (1, height):
             if sign > 0:
                 max_corners += 1
             else:
                 min_corners += 1
-            weight = 120.0
-        elif (x, y) in corner_map:
-            assoc_corner = corner_map[(x, y)]
+            weight = 125.0
+        elif (x, y) in x_squares:
+            assoc_corner = x_squares[(x, y)]
             corner_owner = board.get(assoc_corner)
-            # Si la esquina sigue libre, es una casilla muy peligrosa
+            if corner_owner is None:
+                # Casilla X con esquina vacia: penalizacion doble
+                if sign > 0:
+                    max_danger += 2
+                else:
+                    min_danger += 2
+                weight = -75.0
+            elif corner_owner == piece:
+                weight = 18.0
+            else:
+                weight = -10.0
+        elif (x, y) in c_squares:
+            assoc_corner = c_squares[(x, y)]
+            corner_owner = board.get(assoc_corner)
             if corner_owner is None:
                 if sign > 0:
                     max_danger += 1
                 else:
                     min_danger += 1
-                weight = BASE_WEIGHTS[y - 1][x - 1] if (1 <= x <= 8 and 1 <= y <= 8) else -40.0
+                weight = -28.0
             elif corner_owner == piece:
-                # Si la esquina ya es nuestra, la casilla adyacente es estable y positiva
-                weight = 15.0
-                if x in (1, width) or y in (1, height):
-                    if sign > 0:
-                        max_safe_edges += 1
-                    else:
-                        min_safe_edges += 1
+                weight = 18.0
+                if sign > 0:
+                    max_safe_edges += 1
+                else:
+                    min_safe_edges += 1
             else:
-                weight = -5.0
+                weight = -8.0
         else:
             weight = BASE_WEIGHTS[y - 1][x - 1] if (1 <= x <= 8 and 1 <= y <= 8) else 0.0
             if x in (1, width) or y in (1, height):
@@ -124,15 +204,20 @@ def _board_features(board, max_label, min_label, width=8, height=8):
 
         positional += sign * weight
 
-        # 2. Fichas frontera (adyacentes a al menos una casilla vacia)
+        # 2. Fichas frontera y recoleccion de candidatos vacios para movilidad
+        is_frontier = False
         for dx, dy in DIRECTIONS:
             nx, ny = x + dx, y + dy
             if 1 <= nx <= width and 1 <= ny <= height and (nx, ny) not in board:
-                if sign > 0:
-                    max_frontier += 1
-                else:
-                    min_frontier += 1
-                break
+                is_frontier = True
+                empty_candidates.add((nx, ny))
+        if is_frontier:
+            if sign > 0:
+                max_frontier += 1
+            else:
+                min_frontier += 1
+
+    stable_max, stable_min = _edge_stability(board, max_label, min_label, width, height)
 
     return (
         max_pieces, min_pieces,
@@ -140,152 +225,61 @@ def _board_features(board, max_label, min_label, width=8, height=8):
         max_safe_edges, min_safe_edges,
         max_frontier, min_frontier,
         max_danger, min_danger,
+        stable_max, stable_min,
         positional,
+        empty_candidates,
     )
 
 
-def _legal_move_count(board, player_label, enemy_label, width, height):
-    """Cuenta movimientos legales sin invocar ninguna funcion del motor."""
-    candidates = set()
-    for x, y in board:
-        for dx, dy in DIRECTIONS:
-            move = (x + dx, y + dy)
-            if (
-                1 <= move[0] <= width
-                and 1 <= move[1] <= height
-                and move not in board
-            ):
-                candidates.add(move)
+def _mobility_and_corner_threats(board, candidates, max_label, min_label, width, height):
+    """
+    Calcula en una sola llamada los movimientos legales y cuantas esquinas vacias
+    son capturables en el siguiente turno (evitando el efecto horizonte en d+1).
+    """
+    corners_set = {(1, 1), (width, 1), (1, height), (width, height)}
 
-    legal_moves = 0
-    for x, y in candidates:
-        for dx, dy in DIRECTIONS:
-            nx, ny = x + dx, y + dy
-            enemy_seen = False
-            while (
-                1 <= nx <= width
-                and 1 <= ny <= height
-                and board.get((nx, ny)) == enemy_label
-            ):
-                enemy_seen = True
+    def _scan_player(p_label, e_label):
+        legal_moves = 0
+        capturable_corners = 0
+        for x, y in candidates:
+            is_legal = False
+            for dx, dy in DIRECTIONS:
+                nx, ny = x + dx, y + dy
+                if board.get((nx, ny)) != e_label:
+                    continue
                 nx += dx
                 ny += dy
-            if enemy_seen and board.get((nx, ny)) == player_label:
+                while 1 <= nx <= width and 1 <= ny <= height:
+                    cell = board.get((nx, ny))
+                    if cell == e_label:
+                        nx += dx
+                        ny += dy
+                    elif cell == p_label:
+                        is_legal = True
+                        break
+                    else:
+                        break
+                if is_legal:
+                    break
+            if is_legal:
                 legal_moves += 1
-                break
-    return legal_moves
+                if (x, y) in corners_set:
+                    capturable_corners += 1
+        return legal_moves, capturable_corners
+
+    moves_max, next_corners_max = _scan_player(max_label, min_label)
+    moves_min, next_corners_min = _scan_player(min_label, max_label)
+    return moves_max, moves_min, next_corners_max, next_corners_min
 
 
-def _mobility(board, max_label, min_label, width, height):
-    """Devuelve la movilidad de ambos jugadores desde el tablero."""
-    return (
-        _legal_move_count(board, max_label, min_label, width, height),
-        _legal_move_count(board, min_label, max_label, width, height),
-    )
-
-
-class JoeBidenHeuristic(StudentHeuristic):
+class JeanDelPozoHeuristic(StudentHeuristic):
     """
-    Heuristica hibrida completa: combina matriz posicional dinamica,
-    movilidad real controlada, penalizacion de frontera y transicion al endgame.
+    Heuristica #1: Combina transicion progresiva por fases, evaporacion inicial,
+    movilidad exacta, deteccion de esquinas en d+1 y cierre exacto en el endgame.
     """
 
     def get_name(self) -> str:
-        return "JoeBidenHeuristic"
-
-    def evaluation_function(self, state: TwoPlayerGameState) -> float:
-        is_term, term_val = _eval_terminal(state)
-        if is_term:
-            return term_val
-
-        max_label, min_label = _get_player_labels(state)
-        width = getattr(state.game, "width", 8)
-        height = getattr(state.game, "height", 8)
-        (
-            pieces_max, pieces_min,
-            corners_max, corners_min,
-            edges_max, edges_min,
-            frontier_max, frontier_min,
-            danger_max, danger_min,
-            positional,
-        ) = _board_features(state.board, max_label, min_label, width, height)
-
-        total = pieces_max + pieces_min
-
-        # Fase final: el conteo de fichas es la señal dominante y estable.
-        if total > 52:
-            return float((pieces_max - pieces_min) * 100.0)
-
-        moves_max, moves_min = _mobility(
-            state.board, max_label, min_label, width, height
-        )
-        mob_denom = moves_max + moves_min
-        mobility = 100.0 * (moves_max - moves_min) / mob_denom if mob_denom else 0.0
-
-        # Escala equilibrada: 100% de movilidad vale ~150-200 pts, nunca mas que regalar una esquina
-        phase = 0 if total < 24 else 1
-        mob_weight = (1.8, 1.2)[phase]
-        pos_weight = (1.0, 1.3)[phase]
-
-        return float(
-            pos_weight * positional
-            + mob_weight * mobility
-            + 80.0 * (corners_max - corners_min)
-            + 8.0 * (edges_max - edges_min)
-            - 8.0 * (frontier_max - frontier_min)
-            - 25.0 * (danger_max - danger_min)
-        )
-
-
-class EinsteinyTesla(StudentHeuristic):
-    """
-    Heuristica ultrarrapida O(N) (sin llamadas a _get_valid_moves):
-    Maximiza estabilidad en esquinas y bordes seguros, usando la frontera
-    como aproximacion instantanea de la movilidad pasiva. Imune a timeouts.
-    """
-
-    def get_name(self) -> str:
-        return "EinsteinyTesla"
-
-    def evaluation_function(self, state: TwoPlayerGameState) -> float:
-        is_term, term_val = _eval_terminal(state)
-        if is_term:
-            return term_val
-
-        max_label, min_label = _get_player_labels(state)
-        width = getattr(state.game, "width", 8)
-        height = getattr(state.game, "height", 8)
-        (
-            pieces_max, pieces_min,
-            corners_max, corners_min,
-            edges_max, edges_min,
-            frontier_max, frontier_min,
-            danger_max, danger_min,
-            positional,
-        ) = _board_features(state.board, max_label, min_label, width, height)
-
-        total = pieces_max + pieces_min
-        if total > 52:
-            return float((pieces_max - pieces_min) * 80.0)
-
-        return float(
-            positional
-            + 60.0 * (corners_max - corners_min)
-            + 10.0 * (edges_max - edges_min)
-            - 10.0 * (frontier_max - frontier_min)
-            - 20.0 * (danger_max - danger_min)
-        )
-
-
-class FarmeoAura(StudentHeuristic):
-    """
-    Heuristica progresiva por fases (Apertura, Medio Juego, Final):
-    Pondera la paridad de fichas de forma adaptativa sin descuidar la
-    proteccion de esquinas ni las casillas X/C.
-    """
-
-    def get_name(self) -> str:
-        return "FarmeoAura"
+        return "JeanDelPozoHeuristic"
 
     def evaluation_function(self, state: TwoPlayerGameState) -> float:
         is_term, term_val = _eval_terminal(state)
@@ -301,31 +295,205 @@ class FarmeoAura(StudentHeuristic):
             edges_max, edges_min,
             frontier_max, frontier_min,
             danger_max, danger_min,
+            stable_max, stable_min,
             positional,
+            candidates,
         ) = _board_features(state.board, max_label, min_label, width, height)
 
         total = coins_max + coins_min
         if total == 0:
             return 0.0
 
+        # Cierre letal en las ultimas jugadas (clave contra random a profundidad 1)
+        if total >= 59:
+            return float((coins_max - coins_min) * 150.0 + positional)
+
+        moves_max, moves_min, next_c_max, next_c_min = _mobility_and_corner_threats(
+            state.board, candidates, max_label, min_label, width, height
+        )
+        mob_denom = moves_max + moves_min
+        mobility = 100.0 * (moves_max - moves_min) / mob_denom if mob_denom else 0.0
+
+        wipeout_bonus = 0.0
+        if moves_min == 0 and moves_max > 0:
+            wipeout_bonus = 70.0
+        elif moves_max == 0 and moves_min > 0:
+            wipeout_bonus = -70.0
+
+        next_label = state.next_player.label if state.next_player else None
+        c_threat_max = next_c_max * (80.0 if next_label == max_label else 45.0)
+        c_threat_min = next_c_min * (80.0 if next_label == min_label else 45.0)
+
         parity = 100.0 * (coins_max - coins_min) / total
 
-        # En apertura penalizamos comer demasiadas fichas; en el final lo premiamos fuerte
+        # Fases equilibradas sin perder defensa de movilidad/frontera en medio-tardio
         if total < 22:
-            parity_weight = -0.3
-            frontier_weight = 12.0
-        elif total < 48:
-            parity_weight = 0.4
+            parity_weight = -0.35
+            frontier_weight = 10.0
+            mob_weight = 1.6
+        elif total < 50:
+            parity_weight = 0.35
             frontier_weight = 8.0
+            mob_weight = 1.35
         else:
-            parity_weight = 4.5
-            frontier_weight = 2.0
+            parity_weight = 3.2 + (total - 50) * 0.35
+            frontier_weight = 5.0
+            mob_weight = 1.05
 
         return float(
             positional
-            + 70.0 * (corners_max - corners_min)
-            + 6.0 * (edges_max - edges_min)
+            + mob_weight * mobility
+            + wipeout_bonus
+            + 88.0 * (corners_max - corners_min)
+            + (c_threat_max - c_threat_min)
+            + 26.0 * (stable_max - stable_min)
+            + 6.5 * (edges_max - edges_min)
+            + parity_weight * parity
+            - frontier_weight * (frontier_max - frontier_min)
+            - 23.0 * (danger_max - danger_min)
+        )
+
+
+class IMSERSOheuristic(StudentHeuristic):
+    """
+    Heuristica #2: Fusion de control de paridad porcentual y wipeout (10/10 en normal)
+    con alta ponderacion de bordes indestructibles y movilidad sostenida en obstaculos.
+    """
+
+    def get_name(self) -> str:
+        return "IMSERSOheuristic"
+
+    def evaluation_function(self, state: TwoPlayerGameState) -> float:
+        is_term, term_val = _eval_terminal(state)
+        if is_term:
+            return term_val
+
+        max_label, min_label = _get_player_labels(state)
+        width = getattr(state.game, "width", 8)
+        height = getattr(state.game, "height", 8)
+        (
+            pieces_max, pieces_min,
+            corners_max, corners_min,
+            edges_max, edges_min,
+            frontier_max, frontier_min,
+            danger_max, danger_min,
+            stable_max, stable_min,
+            positional,
+            candidates,
+        ) = _board_features(state.board, max_label, min_label, width, height)
+
+        total = pieces_max + pieces_min
+        if total == 0:
+            return 0.0
+
+        if total >= 59:
+            return float((pieces_max - pieces_min) * 150.0 + positional)
+
+        moves_max, moves_min, next_c_max, next_c_min = _mobility_and_corner_threats(
+            state.board, candidates, max_label, min_label, width, height
+        )
+        mob_denom = moves_max + moves_min
+        mobility = 100.0 * (moves_max - moves_min) / mob_denom if mob_denom else 0.0
+
+        wipeout_bonus = 0.0
+        if moves_min == 0 and moves_max > 0:
+            wipeout_bonus = 75.0
+        elif moves_max == 0 and moves_min > 0:
+            wipeout_bonus = -75.0
+
+        next_label = state.next_player.label if state.next_player else None
+        c_threat_max = next_c_max * (85.0 if next_label == max_label else 50.0)
+        c_threat_min = next_c_min * (85.0 if next_label == min_label else 50.0)
+
+        parity = 100.0 * (pieces_max - pieces_min) / total
+
+        if total < 22:
+            parity_weight = -0.30
+            frontier_weight = 9.5
+            mob_weight = 1.5
+        elif total < 50:
+            parity_weight = 0.38
+            frontier_weight = 8.2
+            mob_weight = 1.35
+        else:
+            parity_weight = 3.5 + (total - 50) * 0.30
+            frontier_weight = 5.5
+            mob_weight = 1.10
+
+        return float(
+            1.12 * positional
+            + mob_weight * mobility
+            + wipeout_bonus
+            + 92.0 * (corners_max - corners_min)
+            + (c_threat_max - c_threat_min)
+            + 29.0 * (stable_max - stable_min)
+            + 7.5 * (edges_max - edges_min)
             + parity_weight * parity
             - frontier_weight * (frontier_max - frontier_min)
             - 25.0 * (danger_max - danger_min)
+        )
+
+
+class Bulin47Heuristic(StudentHeuristic):
+    """
+    Heuristica #3: Fortaleza posicional y estabilidad en bordes/obstaculos (10/10
+    en obstaculos), ahora reforzada con deteccion de ahogo (wipeout_bonus).
+    """
+
+    def get_name(self) -> str:
+        return "Bulin47Heuristic"
+
+    def evaluation_function(self, state: TwoPlayerGameState) -> float:
+        is_term, term_val = _eval_terminal(state)
+        if is_term:
+            return term_val
+
+        max_label, min_label = _get_player_labels(state)
+        width = getattr(state.game, "width", 8)
+        height = getattr(state.game, "height", 8)
+        (
+            pieces_max, pieces_min,
+            corners_max, corners_min,
+            edges_max, edges_min,
+            frontier_max, frontier_min,
+            danger_max, danger_min,
+            stable_max, stable_min,
+            positional,
+            candidates,
+        ) = _board_features(state.board, max_label, min_label, width, height)
+
+        total = pieces_max + pieces_min
+        if total >= 59:
+            return float((pieces_max - pieces_min) * 150.0 + positional)
+
+        moves_max, moves_min, next_c_max, next_c_min = _mobility_and_corner_threats(
+            state.board, candidates, max_label, min_label, width, height
+        )
+        mob_denom = moves_max + moves_min
+        mobility = 100.0 * (moves_max - moves_min) / mob_denom if mob_denom else 0.0
+
+        wipeout_bonus = 0.0
+        if moves_min == 0 and moves_max > 0:
+            wipeout_bonus = 75.0
+        elif moves_max == 0 and moves_min > 0:
+            wipeout_bonus = -75.0
+
+        next_label = state.next_player.label if state.next_player else None
+        c_threat_max = next_c_max * (85.0 if next_label == max_label else 50.0)
+        c_threat_min = next_c_min * (85.0 if next_label == min_label else 50.0)
+
+        parity = 100.0 * (pieces_max - pieces_min) / total if total else 0.0
+        parity_weight = -0.25 if total < 22 else (0.4 if total < 50 else 4.2)
+
+        return float(
+            1.15 * positional
+            + 1.3 * mobility
+            + wipeout_bonus
+            + 95.0 * (corners_max - corners_min)
+            + (c_threat_max - c_threat_min)
+            + 30.0 * (stable_max - stable_min)
+            + 8.0 * (edges_max - edges_min)
+            + parity_weight * parity
+            - 8.5 * (frontier_max - frontier_min)
+            - 26.0 * (danger_max - danger_min)
         )
