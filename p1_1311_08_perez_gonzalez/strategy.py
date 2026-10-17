@@ -83,7 +83,11 @@ class ManualStrategy(Strategy):
 
 
 class MinimaxStrategy(Strategy):
-    """Minimax strategy."""
+    """Elige movimientos mediante el algoritmo minimax con profundidad limitada.
+    La heurística devuelve un valor desde el punto de vista de MAX. Por tanto,
+    MAX selecciona el sucesor con mayor valor y MIN el que tiene menor valor.
+    La búsqueda alterna entre ambas operaciones hasta alcanzar un estado terminal o la profundidad configurada.
+    """
 
     def __init__(
         self,
@@ -103,8 +107,10 @@ class MinimaxStrategy(Strategy):
         state: TwoPlayerGameState,
         gui: bool = False,
     ) -> TwoPlayerGameState:
-        """Compute the next state in the game."""
+        """Devuelve el mejor sucesor encontrado desde el estado actual """
 
+        # El jugador actual se trata como MAX en la raíz de la búsqueda
+        # Después, las llamadas recursivas alternan entre MAX y MIN
         minimax_value, minimax_successor = self._max_value(
             state,
             self.max_depth_minimax,
@@ -124,8 +130,9 @@ class MinimaxStrategy(Strategy):
         state: TwoPlayerGameState,
         depth: int,
     ) -> float:
-        """Min step of the minimax algorithm."""
+        """Devuelve el valor suponiendo que el siguiente jugador es MIN"""
 
+        # en una hoja no hay movimiento que elegir: se evalúa el tablero
         if state.end_of_game or depth == 0:
             if self.timed_out:
                 minimax_value = 0
@@ -141,6 +148,7 @@ class MinimaxStrategy(Strategy):
         else:
             minimax_value = np.inf
 
+            # MIN supone que el oponente elige el sucesor peor para MAX
             for successor in self.generate_successors(state):
                 if self.verbose > 1:
                     print('{}: {}'.format(state.board, minimax_value))
@@ -164,8 +172,9 @@ class MinimaxStrategy(Strategy):
         state: TwoPlayerGameState,
         depth: int,
     ) -> float:
-        """Max step of the minimax algorithm."""
+        """Devuelve el valor suponiendo que el siguiente jugador es MAX"""
 
+        # un estado terminal o el límite de profundidad termina esta rama
         if state.end_of_game or depth == 0:
             if self.timed_out:
                 minimax_value = 0
@@ -181,6 +190,7 @@ class MinimaxStrategy(Strategy):
         else:
             minimax_value = -np.inf
 
+            # MAX supone que el jugador elige el sucesor mejor para MAX
             for successor in self.generate_successors(state):
                 if self.verbose > 1:
                     print('{}: {}'.format(state.board, minimax_value))
@@ -200,7 +210,12 @@ class MinimaxStrategy(Strategy):
 
 
 class MinimaxAlphaBetaStrategy(Strategy):
-    """Minimax alpha-beta strategy."""
+    """Estrategia minimax acelerada mediante poda alfa-beta.
+    Calcula el mismo resultado que MinimaxStrategy pero evita
+    explorar ramas que no pueden mejorar la decisión encontrada. Alpha
+    es el mejor valor garantizado para MAX y beta es el mejor valor
+    garantizado para MIN a lo largo del camino actual
+    """
 
     def __init__(
         self,
@@ -220,8 +235,9 @@ class MinimaxAlphaBetaStrategy(Strategy):
         state: TwoPlayerGameState,
         gui: bool = False,
     ) -> TwoPlayerGameState:
-        """Compute the next state in the game."""
+        """Devuelve el mejor sucesor encontrado usando poda alfa-beta"""
 
+        # Al principio ningún jugador tiene una cota, por lo que el intervalo no está acotado
         minimax_value, minimax_successor = self._max_value(
             state,
             self.max_depth_minimax,
@@ -245,8 +261,9 @@ class MinimaxAlphaBetaStrategy(Strategy):
         alpha: float,
         beta: float,
     ) -> Tuple[float, Optional[TwoPlayerGameState]]:
-        """Min step of the minimax algorithm with alpha-beta pruning."""
+        """Evalúa un nodo MIN y poda sucesores que no pueden influir."""
 
+        # la evaluación de una hoja es igual que en el minimax normal
         if state.end_of_game or depth == 0:
             if self.timed_out:
                 minimax_value = 0
@@ -263,6 +280,8 @@ class MinimaxAlphaBetaStrategy(Strategy):
             minimax_value = np.inf
             minimax_successor = None
 
+            # MIN conserva el menor valor hijo, porque representa al oponente
+            # intentando reducir la puntuación final de MAX
             for successor in self.generate_successors(state):
                 if self.verbose > 1:
                     print('{}: [{:.2g}, {:.2g}]'.format(
@@ -283,9 +302,12 @@ class MinimaxAlphaBetaStrategy(Strategy):
                     minimax_value = successor_minimax_value
                     minimax_successor = successor
 
+                # MAX ya tiene una opción con valor alpha o superior. MIN
+                # nunca elegiría esta rama, así que se descartan los hijos
                 if minimax_value <= alpha:
                     break
 
+                # MIN mejora su cota superior tras examinar este hijo
                 beta = min(beta, minimax_value)
 
         if self.verbose > 1:
@@ -305,8 +327,9 @@ class MinimaxAlphaBetaStrategy(Strategy):
         alpha: float,
         beta: float,
     ) -> Tuple[float, Optional[TwoPlayerGameState]]:
-        """Max step of the minimax algorithm with alpha-beta pruning."""
+        """Evalúa un nodo MAX y poda sucesores que no pueden influir."""
 
+        # La evaluación de una hoja es igual que en el minimax normal
         if state.end_of_game or depth == 0:
             if self.timed_out:
                 minimax_value = 0
@@ -323,6 +346,8 @@ class MinimaxAlphaBetaStrategy(Strategy):
             minimax_value = -np.inf
             minimax_successor = None
 
+            # MAX conserva el mayor valor hijo, porque representa al jugador
+            # actual intentando maximizar la puntuación final
             for successor in self.generate_successors(state):
                 if self.verbose > 1:
                     print('{}: [{:.2g}, {:.2g}]'.format(
@@ -343,9 +368,12 @@ class MinimaxAlphaBetaStrategy(Strategy):
                     minimax_value = successor_minimax_value
                     minimax_successor = successor
 
+                # MIN ya tiene una opción con valor beta o inferior. MAX
+                # nunca elegiría esta rama, así que se descartan los hijos
                 if minimax_value >= beta:
                     break
 
+                # MAX mejora su cota inferior tras examinar este hijo
                 alpha = max(alpha, minimax_value)
 
         if self.verbose > 1:
@@ -357,4 +385,3 @@ class MinimaxAlphaBetaStrategy(Strategy):
             )
 
         return minimax_value, minimax_successor
-

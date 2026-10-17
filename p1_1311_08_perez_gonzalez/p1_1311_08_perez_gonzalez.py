@@ -274,8 +274,8 @@ def _mobility_and_corner_threats(board, candidates, max_label, min_label, width,
 
 class JeanDelPozoHeuristic(StudentHeuristic):
     """
-    Heuristica #1: Combina transicion progresiva por fases, evaporacion inicial,
-    movilidad exacta, deteccion de esquinas en d+1 y cierre exacto en el endgame.
+    Heuristica #1: Estructura blindada de Bulin47/IMSERSO pero con perfil de
+    alta evaporacion inicial y control de movilidad para castigar rivales greedy.
     """
 
     def get_name(self) -> str:
@@ -304,7 +304,6 @@ class JeanDelPozoHeuristic(StudentHeuristic):
         if total == 0:
             return 0.0
 
-        # Cierre letal en las ultimas jugadas (clave contra random a profundidad 1)
         if total >= 59:
             return float((coins_max - coins_min) * 150.0 + positional)
 
@@ -316,47 +315,45 @@ class JeanDelPozoHeuristic(StudentHeuristic):
 
         wipeout_bonus = 0.0
         if moves_min == 0 and moves_max > 0:
-            wipeout_bonus = 70.0
+            wipeout_bonus = 75.0
         elif moves_max == 0 and moves_min > 0:
-            wipeout_bonus = -70.0
+            wipeout_bonus = -75.0
 
         next_label = state.next_player.label if state.next_player else None
-        c_threat_max = next_c_max * (80.0 if next_label == max_label else 45.0)
-        c_threat_min = next_c_min * (80.0 if next_label == min_label else 45.0)
+        c_threat_max = next_c_max * (85.0 if next_label == max_label else 50.0)
+        c_threat_min = next_c_min * (85.0 if next_label == min_label else 50.0)
 
         parity = 100.0 * (coins_max - coins_min) / total
 
-        # Fases equilibradas sin perder defensa de movilidad/frontera en medio-tardio
         if total < 22:
             parity_weight = -0.35
-            frontier_weight = 10.0
-            mob_weight = 1.6
+            frontier_weight = 9.5
+            mob_weight = 1.55
         elif total < 50:
-            parity_weight = 0.35
-            frontier_weight = 8.0
+            parity_weight = 0.40
+            frontier_weight = 8.5
             mob_weight = 1.35
         else:
-            parity_weight = 3.2 + (total - 50) * 0.35
-            frontier_weight = 5.0
-            mob_weight = 1.05
+            parity_weight = 4.0
+            frontier_weight = 7.5
+            mob_weight = 1.25
 
         return float(
-            positional
+            1.14 * positional
             + mob_weight * mobility
             + wipeout_bonus
-            + 88.0 * (corners_max - corners_min)
+            + 94.0 * (corners_max - corners_min)
             + (c_threat_max - c_threat_min)
-            + 26.0 * (stable_max - stable_min)
-            + 6.5 * (edges_max - edges_min)
+            + 29.5 * (stable_max - stable_min)
+            + 7.8 * (edges_max - edges_min)
             + parity_weight * parity
             - frontier_weight * (frontier_max - frontier_min)
-            - 23.0 * (danger_max - danger_min)
+            - 25.5 * (danger_max - danger_min)
         )
-
 
 class IMSERSOheuristic(StudentHeuristic):
     """
-    Heuristica #2: Fusion de control de paridad porcentual y wipeout (10/10 en normal)
+    Heuristica #2: Fusion de control de paridad porcentual y wipeout
     con alta ponderacion de bordes indestructibles y movilidad sostenida en obstaculos.
     """
 
@@ -436,8 +433,7 @@ class IMSERSOheuristic(StudentHeuristic):
 
 class Bulin47Heuristic(StudentHeuristic):
     """
-    Heuristica #3: Fortaleza posicional y estabilidad en bordes/obstaculos (10/10
-    en obstaculos), ahora reforzada con deteccion de ahogo (wipeout_bonus).
+    Heuristica #3: Fortaleza posicional y estabilidad en bordes/obstaculos, reforzada con deteccion de ahogo wipeout_bonus
     """
 
     def get_name(self) -> str:

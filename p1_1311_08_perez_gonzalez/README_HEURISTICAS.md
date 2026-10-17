@@ -1,6 +1,14 @@
-# Pruebas de las heurísticas
+# README Práctica 1 IA
 
-Este directorio contiene las tres heurísticas que se presentan al torneo:
+Archivos adicionales a los iniciales:
+
+- `p1_1311_08_perez_gonzalez.py`: implementación de las tres heurísticas.
+- `test_p1_1311_08_perez_gonzalez.py`: pruebas unitarias.
+- `benchmark_heuristics.py`: benchmark reproducible de las heurísticas.
+- `README_HEURISTICAS.md`: instrucciones de ejecución y validación.
+- `memoria.pdf`: memoria de la práctica.
+
+El fichero p1_1311_08_perez_gonzalez.py contiene las tres heurísticas que se presentan al torneo:
 
 - `JeanDelPozoHeuristic`
 - `IMSERSOheuristic`
@@ -11,11 +19,19 @@ indicada en el enunciado de la práctica.
 
 ## Pruebas unitarias
 
-Desde la raíz del repositorio:
+```bash
+PYTHONPATH=p1_1311_08_perez_gonzalez .venv/bin/python -m unittest discover \
+  -s p1_1311_08_perez_gonzalez \
+  -p 'test_p1_1311_08_perez_gonzalez.py'
+```
+
+También se pueden ejecutar desde la carpeta de la práctica:
 
 ```bash
-PYTHONPATH=juegos .venv/bin/python -m unittest \
-  juegos/test_p1_1311_08_perez_gonzalez.py
+cd p1_1311_08_perez_gonzalez
+PYTHONPATH=. ../.venv/bin/python -m unittest discover \
+  -s . \
+  -p 'test_p1_1311_08_perez_gonzalez.py'
 ```
 
 Las pruebas comprueban:
@@ -41,7 +57,8 @@ El resultado esperado es `2440.0` para ese tablero concreto.
 Para ejecutar el benchmark con los dos tableros iniciales oficiales:
 
 ```bash
-PYTHONPATH=juegos .venv/bin/python juegos/benchmark_heuristics.py
+PYTHONPATH=p1_1311_08_perez_gonzalez .venv/bin/python \
+  p1_1311_08_perez_gonzalez/benchmark_heuristics.py
 ```
 
 El comando ejecuta profundidad 4 automáticamente y enfrenta cada pareja de
@@ -62,7 +79,8 @@ ejecuta las 12 partidas de los dos tableros oficiales y permite hasta 30
 segundos por movimiento. Para una comprobación rápida a profundidad 4:
 
 ```bash
-PYTHONPATH=juegos .venv/bin/python juegos/benchmark_heuristics.py \
+PYTHONPATH=p1_1311_08_perez_gonzalez .venv/bin/python \
+  p1_1311_08_perez_gonzalez/benchmark_heuristics.py \
   --depth 4 \
   --max-games 2 \
   --max-seconds-per-move 10
@@ -72,7 +90,8 @@ Para ejecutar las 12 partidas completas con un límite de 30 segundos por
 movimiento:
 
 ```bash
-PYTHONPATH=juegos .venv/bin/python juegos/benchmark_heuristics.py \
+PYTHONPATH=p1_1311_08_perez_gonzalez .venv/bin/python \
+  p1_1311_08_perez_gonzalez/benchmark_heuristics.py \
   --depth 4 \
   --max-seconds-per-move 30
 ```
@@ -83,7 +102,8 @@ El benchmark puede generar posiciones reproducibles de medio juego, pero
 también mantiene profundidad 4:
 
 ```bash
-PYTHONPATH=juegos .venv/bin/python juegos/benchmark_heuristics.py \
+PYTHONPATH=p1_1311_08_perez_gonzalez .venv/bin/python \
+  p1_1311_08_perez_gonzalez/benchmark_heuristics.py \
   --depth 4 \
   --positions 4 \
   --plies 4 \
@@ -100,13 +120,12 @@ de la del torneo.
 Para comprobar sintaxis y espacios:
 
 ```bash
-PYTHONPATH=juegos .venv/bin/python -m py_compile \
-  juegos/p1_1311_08_perez_gonzalez.py \
-  juegos/benchmark_heuristics.py \
-  juegos/test_p1_1311_08_perez_gonzalez.py
+PYTHONPATH=p1_1311_08_perez_gonzalez .venv/bin/python -m py_compile \
+  p1_1311_08_perez_gonzalez/p1_1311_08_perez_gonzalez.py \
+  p1_1311_08_perez_gonzalez/benchmark_heuristics.py \
+  p1_1311_08_perez_gonzalez/test_p1_1311_08_perez_gonzalez.py
 
 git diff --check
 ```
-
 El benchmark no modifica la implementación de las heurísticas. Solo importa
 las tres clases, construye partidas reproducibles y recoge sus resultados.
