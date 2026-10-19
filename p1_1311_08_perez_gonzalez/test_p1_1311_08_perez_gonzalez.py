@@ -1,3 +1,11 @@
+"""
+    Autores:
+        Arturo Perez Noves <arturo.perezn@estudiante.uam.es>
+        Alejandro Gonzalez Garcia <alejandro.gonzalez06@estudiante.uam.es>
+    Grupo: 1311
+    Pareja: 08
+"""
+
 import unittest
 
 from game import Player, TwoPlayerGameState

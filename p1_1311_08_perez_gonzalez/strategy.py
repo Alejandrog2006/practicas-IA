@@ -1,9 +1,15 @@
 """Strategies for two player games.
 
-   Authors:
+    Autores:
         Fabiano Baroni <fabiano.baroni@uam.es>,
         Alejandro Bellogin Kouki <alejandro.bellogin@uam.es>
         Alberto Suárez <alberto.suarez@uam.es>
+    
+        Arturo Perez Noves <arturo.perezn@estudiante.uam.es>
+        Alejandro Gonzalez Garcia <alejandro.gonzalez06@estudiante.uam.es>
+        
+    Grupo: 1311
+    Pareja: 08
 """
 
 from __future__ import annotations  # For Python 3.7
@@ -280,8 +286,7 @@ class MinimaxAlphaBetaStrategy(Strategy):
             minimax_value = np.inf
             minimax_successor = None
 
-            # MIN conserva el menor valor hijo, porque representa al oponente
-            # intentando reducir la puntuación final de MAX
+            # Paso MIN: seleccionar la cota inferior para el adversario
             for successor in self.generate_successors(state):
                 if self.verbose > 1:
                     print('{}: [{:.2g}, {:.2g}]'.format(
@@ -302,8 +307,7 @@ class MinimaxAlphaBetaStrategy(Strategy):
                     minimax_value = successor_minimax_value
                     minimax_successor = successor
 
-                # MAX ya tiene una opción con valor alpha o superior. MIN
-                # nunca elegiría esta rama, así que se descartan los hijos
+                # Poda alfa: el nodo no puede empeorar la mejor opción de MAX
                 if minimax_value <= alpha:
                     break
 
@@ -346,8 +350,7 @@ class MinimaxAlphaBetaStrategy(Strategy):
             minimax_value = -np.inf
             minimax_successor = None
 
-            # MAX conserva el mayor valor hijo, porque representa al jugador
-            # actual intentando maximizar la puntuación final
+            # Paso MAX: seleccionar el valor más favorable
             for successor in self.generate_successors(state):
                 if self.verbose > 1:
                     print('{}: [{:.2g}, {:.2g}]'.format(
@@ -368,8 +371,7 @@ class MinimaxAlphaBetaStrategy(Strategy):
                     minimax_value = successor_minimax_value
                     minimax_successor = successor
 
-                # MIN ya tiene una opción con valor beta o inferior. MAX
-                # nunca elegiría esta rama, así que se descartan los hijos
+                # Poda beta: el nodo no puede superar la cota de MIN
                 if minimax_value >= beta:
                     break
 

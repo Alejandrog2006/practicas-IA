@@ -3,7 +3,10 @@
     Authors:
         Alejandro Bellogin <alejandro.bellogin@uam.es>
         Arturo Perez Noves <arturo.perezn@estudiante.uam.es>
-        Alejandro Gonzalez <alejandro.gonzalez06@estudiante.uam.es>
+        Alejandro Gonzalez Garcia <alejandro.gonzalez06@estudiante.uam.es>
+    
+    Grupo: 1311
+    Pareja: 08
 """
 
 import search
@@ -264,8 +267,9 @@ def depthFirstSearch(search_problem):
 
     while not structure.isEmpty():
         path = structure.pop()
-        current_state = (num_visited := num_visited + 1) and path[0] # INDEX THE CURRENT STATE
-
+        num_visited += 1
+        current_state = path[0]
+        
         if search_problem.isGoalState(current_state):
             return num_visited, path[1] # RETURN THE PATH OF ACTIONS
 

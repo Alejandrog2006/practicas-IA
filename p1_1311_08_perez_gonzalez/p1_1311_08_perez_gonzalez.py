@@ -274,8 +274,7 @@ def _mobility_and_corner_threats(board, candidates, max_label, min_label, width,
 
 class JeanDelPozoHeuristic(StudentHeuristic):
     """
-    Heuristica #1: Estructura blindada de Bulin47/IMSERSO pero con perfil de
-    alta evaporacion inicial y control de movilidad para castigar rivales greedy.
+    Heuristica #1: Heurística con perfil de evaporación en apertura y control de movilidad relativa.
     """
 
     def get_name(self) -> str:
@@ -353,8 +352,7 @@ class JeanDelPozoHeuristic(StudentHeuristic):
 
 class IMSERSOheuristic(StudentHeuristic):
     """
-    Heuristica #2: Fusion de control de paridad porcentual y wipeout
-    con alta ponderacion de bordes indestructibles y movilidad sostenida en obstaculos.
+    Heuristica #2: Heurística orientada a estabilidad de bordes con obstáculos y control de paridad.
     """
 
     def get_name(self) -> str:
@@ -433,7 +431,7 @@ class IMSERSOheuristic(StudentHeuristic):
 
 class Bulin47Heuristic(StudentHeuristic):
     """
-    Heuristica #3: Fortaleza posicional y estabilidad en bordes/obstaculos, reforzada con deteccion de ahogo wipeout_bonus
+    Heurística #3: Heurística posicional con alta ponderación de esquinas, estabilidad en bordes y ahogo del rival.
     """
 
     def get_name(self) -> str:

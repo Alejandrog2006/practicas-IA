@@ -1,5 +1,10 @@
-"""Benchmark competitivo de las heuristicas de Reversi."""
-
+"""Benchmark competitivo de las heuristicas de Reversi
+    Autores:
+        Arturo Perez Noves <arturo.perezn@estudiante.uam.es>
+        Alejandro Gonzalez Garcia <alejandro.gonzalez06@estudiante.uam.es>
+    Grupo: 1311
+    Pareja: 08
+"""
 from __future__ import annotations
 
 import argparse
@@ -45,7 +50,7 @@ def build_positions(count, plies, seed, obstacles=False):
             state = randomizer.choice(successors)
         board = dict(state.board)
         if obstacles:
-            for square in ((1, 1), (8, 2), (1, 7), (7, 8)):
+            for square in ((2, 1), (8, 2), (1, 7), (7, 8)):
                 board.setdefault(square, "O")
         positions.append(board)
     return positions
